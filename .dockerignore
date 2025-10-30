@@ -1,0 +1,23 @@
+# Ignora dependências locais
+node_modules
+
+# Logs e arquivos temporários
+npm-debug.log
+yarn-error.log
+*.log
+
+# Cache e diretórios do sistema
+.DS_Store
+Thumbs.db
+
+# Git e configurações locais
+.git
+.gitignore
+
+# Dockerfiles e configs que não precisam ir pro container
+Dockerfile
+.dockerignore
+
+# Arquivos de ambiente (se tiver)
+.env
+

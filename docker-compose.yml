@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app            # monta seu código local dentro do container
+      - /app/node_modules # evita sobrescrever dependências do container
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+    command: nodemon server.js
