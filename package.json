@@ -1,22 +1,25 @@
 {
-  "dependencies": {
-    "express": "^5.1.0",
-    "jquery": "^3.7.1"
-  },
   "name": "oscaraehocapeta",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {
-    "connect-livereload": "^0.6.1",
-    "live-server": "^1.2.2",
-    "livereload": "^0.10.3"
-  },
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch . server.js"
+    "dev": "NODE_ENV=dev nodemon --legacy-watch server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "connect-livereload": "^0.6.1",
+    "livereload": "^0.10.3",
+    "nodemon": "^3.1.10"
+  }
 }

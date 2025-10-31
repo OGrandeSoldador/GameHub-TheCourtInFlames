@@ -1,14 +1,18 @@
-version: "3.9"
+version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/app            # monta seu código local dentro do container
-      - /app/node_modules # evita sobrescrever dependências do container
+    build: .
     ports:
-      - "3000:3000"
-      - "35729:35729"
-    command: nodemon server.js
+      - "3000:3000"      # Porta do servidor
+      - "35729:35729"    # Porta do livereload
+    volumes:
+      - .:/app           # Sincronizar arquivos do host com container
+      - /app/node_modules # Não sobrescrever node_modules
+    environment:
+      - NODE_ENV=dev
+      - PORT=3000
+      - LIVERELOAD_PORT=35729
+    command: npm run dev
+    stdin_open: true
+    tty: true
