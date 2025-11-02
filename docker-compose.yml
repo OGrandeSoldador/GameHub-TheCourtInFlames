@@ -1,18 +1,47 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
     build: .
+    container_name: node_app
     ports:
-      - "3000:3000"      # Porta do servidor
-      - "35729:35729"    # Porta do livereload
+      - "3000:3000"       # Porta do servidor
+      - "35729:35729"     # Porta do livereload
     volumes:
-      - .:/app           # Sincronizar arquivos do host com container
-      - /app/node_modules # Não sobrescrever node_modules
+      - .:/app            # Sincronizar arquivos do host
+      - /app/node_modules # Evita sobrescrever node_modules
     environment:
       - NODE_ENV=dev
       - PORT=3000
       - LIVERELOAD_PORT=35729
+      - DB_HOST=mssql
+      - DB_USER=sa
+      - DB_PASS=YourStrong!Passw0rd
+      - DB_NAME=meu_banco
+    depends_on:
+      - mssql
     command: npm run dev
     stdin_open: true
     tty: true
+    networks:
+      - backend
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_db
+    restart: always
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"      
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  sql_data:
