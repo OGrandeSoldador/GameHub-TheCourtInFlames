@@ -11,11 +11,12 @@ services:
       - "35729:35729"
     volumes:
       - .:/app
+      - /app/node_modules:/app/node_modules  # ✅ garante persistência das dependências
     environment:
       NODE_ENV: development
       PORT: 3000
       LIVERELOAD_PORT: 35729
-      DB_HOST: mssql        
+      DB_HOST: mssql         # ✅ usa o nome do serviço na rede Docker
       DB_USER: gamehub
       DB_PASS: "Saw50812@"
       DB_NAME: gamehub
@@ -39,7 +40,7 @@ services:
     networks:
       - backend
     volumes:
-      - sql_data:/var/opt/mssql   
+      - sql_data:/var/opt/mssql   # ✅ persistência de dados do SQL Server
 
   mssql-setup:
     image: mcr.microsoft.com/mssql-tools
