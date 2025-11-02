@@ -5,21 +5,22 @@ services:
     build: .
     container_name: node_app
     ports:
-      - "3000:3000"       # Porta do servidor
-      - "35729:35729"     # Porta do livereload
+      - "3000:3000"
+      - "35729:35729"
     volumes:
-      - .:/app            # Sincronizar arquivos do host
-      - /app/node_modules # Evita sobrescrever node_modules
+      - .:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=dev
       - PORT=3000
       - LIVERELOAD_PORT=35729
-      - DB_HOST=mssql
-      - DB_USER=sa
-      - DB_PASS=YourStrong!Passw0rd
-      - DB_NAME=meu_banco
+      - DB_HOST=localhost
+      - DB_USER=gamehub
+      - DB_PASS=Saw50812@
+      - DB_NAME=gamehub
     depends_on:
       - mssql
+      - mssql-setup
     command: npm run dev
     stdin_open: true
     tty: true
@@ -31,15 +32,34 @@ services:
     container_name: sqlserver_db
     restart: always
     environment:
-      SA_PASSWORD: "YourStrong!Passw0rd"
+      SA_PASSWORD: "1qazxsw23EDC"
       ACCEPT_EULA: "Y"
     ports:
-      - "1433:1433"      
-    volumes:
-      - sql_data:/var/opt/mssql
+      - "1433:1433"
     networks:
       - backend
+    volumes: []
 
+  mssql-setup:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - mssql
+    networks:
+      - backend
+    volumes:
+      - ./docker/init:/scripts:ro
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        for i in {1..30}; do
+          /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -Q "SELECT 1" && break
+          echo "⏳ Aguardando SQL Server inicializar..." && sleep 2
+        done
+        echo "🚀 Executando script de inicialização..."
+        /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -i /scripts/init.sql
+    environment:
+      - SA_PASSWORD=1qazxsw23EDC
 networks:
   backend:
 
