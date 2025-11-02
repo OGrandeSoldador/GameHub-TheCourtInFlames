@@ -2,25 +2,25 @@ version: "3.8"
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: node_app
     ports:
       - "3000:3000"
       - "35729:35729"
     volumes:
       - .:/app
-      - /app/node_modules
     environment:
-      - NODE_ENV=dev
-      - PORT=3000
-      - LIVERELOAD_PORT=35729
-      - DB_HOST=localhost
-      - DB_USER=gamehub
-      - DB_PASS=Saw50812@
-      - DB_NAME=gamehub
+      NODE_ENV: development
+      PORT: 3000
+      LIVERELOAD_PORT: 35729
+      DB_HOST: mssql        
+      DB_USER: gamehub
+      DB_PASS: "Saw50812@"
+      DB_NAME: gamehub
     depends_on:
       - mssql
-      - mssql-setup
     command: npm run dev
     stdin_open: true
     tty: true
@@ -38,7 +38,8 @@ services:
       - "1433:1433"
     networks:
       - backend
-    volumes: []
+    volumes:
+      - sql_data:/var/opt/mssql   
 
   mssql-setup:
     image: mcr.microsoft.com/mssql-tools
@@ -52,14 +53,16 @@ services:
       - /bin/bash
       - -c
       - |
-        for i in {1..30}; do
-          /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -Q "SELECT 1" && break
-          echo "⏳ Aguardando SQL Server inicializar..." && sleep 2
+        echo "⏳ Aguardando SQL Server inicializar..."
+        for i in {1..60}; do
+          /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -Q "SELECT 1" &>/dev/null && break
+          sleep 2
         done
         echo "🚀 Executando script de inicialização..."
         /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -i /scripts/init.sql
     environment:
-      - SA_PASSWORD=1qazxsw23EDC
+      SA_PASSWORD: "1qazxsw23EDC"
+
 networks:
   backend:
 
