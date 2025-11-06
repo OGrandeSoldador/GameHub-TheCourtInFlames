@@ -1,3 +1,3 @@
-$("#bora").click(function () {
-  alert("Clicou!");
+document.getElementById("entrar").addEventListener("click", ()=>{
+    
 });

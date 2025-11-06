@@ -28,11 +28,16 @@ if (process.env.NODE_ENV === "dev") {
     setTimeout(() => liveReloadServer.refresh("/"), 100);
   });
 
+  // 🔄 Middleware do LiveReload
+  // Deve vir ANTES de servir os arquivos estáticos para desabilitar o cache.
   app.use(connectLivereload());
   console.log(
     `🔄 Livereload rodando na porta ${process.env.LIVERELOAD_PORT || 35729}`
   );
 }
+
+// 📂 Servir arquivos estáticos da pasta 'public'
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   "/bootstrap",
@@ -46,7 +51,6 @@ app.use(
   "/js",
   express.static(path.join(__dirname, "node_modules/jquery/dist"))
 );
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
   const send = res.send;
@@ -56,16 +60,16 @@ app.use((req, res, next) => {
       const isDev = process.env.NODE_ENV === "dev";
 
       const css = `
-        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/bootstrap-icons/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
       `;
       const js = `
         <script defer src="/js/jquery.min.js"></script>
-        <script defer src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-        ${
-          isDev
-            ? `<script defer src="http://localhost:${livereloadPort}/livereload.js?snipver=1"></script>`
-            : ""
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        ${isDev
+          ? `<script defer src="http://localhost:${livereloadPort}/livereload.js?snipver=1"></script>`
+          : ""
         }
       `;
 
