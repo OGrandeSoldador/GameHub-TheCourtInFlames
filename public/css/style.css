@@ -1,9 +1,9 @@
-
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
+
 #container {
     background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
     min-height: 100vh;
@@ -42,9 +42,6 @@
     font-weight: 400;
 }
 
-.nav-pills {
-    z-index: 1;
-}
 
 .nav-pills .nav-link {
     color: #6c757d;
@@ -53,11 +50,17 @@
 
 }
 
-.border-bottom {
+#pills-tab {
+    z-index: 0;
+    position: relative;
+}
+
+#pills-tab-underline {
     z-index: -1;
+    background-color: #b1b7bd;
+    position: absolute;
     height: 2px;
     width: 100%;
-    position: absolute;
     bottom: 0;
     left: 0;
 }
@@ -80,6 +83,7 @@
     box-shadow: none !important;
     border: 2px solid #7c5bf3;
 }
+
 .form-control:hover {
     border: 2px solid #7c5bf3;
 }
@@ -143,6 +147,7 @@
 .form-check-input:focus {
     box-shadow: none !important;
 }
-input[type="search"]{
+
+input[type="search"] {
     padding: 0;
 }
