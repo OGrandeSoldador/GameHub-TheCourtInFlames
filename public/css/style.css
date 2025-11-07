@@ -1,10 +1,10 @@
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
-
-body {
+#container {
     background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
     min-height: 100vh;
     display: flex;
@@ -13,7 +13,7 @@ body {
 
 }
 
-.card {
+#card {
     border: none;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -142,4 +142,7 @@ body {
 
 .form-check-input:focus {
     box-shadow: none !important;
+}
+input[type="search"]{
+    padding: 0;
 }
