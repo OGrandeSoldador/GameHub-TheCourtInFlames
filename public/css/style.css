@@ -1,0 +1,148 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+#container {
+    background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 450px;
+    background-color: #fff;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
+    color: rgba(255, 255, 255, 0.918);
+    text-align: center;
+    padding: 50px 40px
+}
+
+.card-header h4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-weight: 700;
+}
+
+.card-header p {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.nav-pills {
+    z-index: 1;
+}
+
+.nav-pills .nav-link {
+    color: #6c757d;
+    border-radius: 0;
+    font-weight: 500;
+
+}
+
+.border-bottom {
+    z-index: -1;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.nav-pills .nav-link.active {
+    color: #5427f5;
+    background-color: transparent;
+    border-bottom: 2px solid #4407ec;
+}
+
+.form-control {
+    font-weight: 500;
+    padding: 15px 10px 15px 10px;
+    border-radius: 10px;
+    border: 2px solid #dee2e6;
+
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+    border: 2px solid #7c5bf3;
+}
+.form-control:hover {
+    border: 2px solid #7c5bf3;
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: #6c757d;
+    pointer-events: none;
+}
+
+.btn-primary {
+    padding: 15px 0;
+    font-weight: 500;
+    background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.social-btn {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    width: 48%;
+    background: #fff;
+    font-weight: 500;
+}
+
+.social-btn:hover {
+    background-color: #f1f1f1;
+}
+
+.text-muted small {
+    color: #b1b7bd;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.text-link {
+    text-decoration: none;
+    color: #6c4be4da;
+    font-weight: 700;
+}
+
+.border-down {
+    background-color: #b1b7bd57;
+    height: 4px;
+    width: 100%;
+
+}
+
+.form-check-input:checked {
+    background-color: #5427f5 !important;
+    border-color: #5427f5 !important;
+}
+
+.form-check-input:focus {
+    box-shadow: none !important;
+}
+input[type="search"]{
+    padding: 0;
+}

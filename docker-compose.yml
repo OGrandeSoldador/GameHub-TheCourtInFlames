@@ -1,67 +1,87 @@
-version: "3.8"
-
 services:
-  app:
-    build: .
-    container_name: node_app
-    ports:
-      - "3000:3000"
-      - "35729:35729"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=dev
-      - PORT=3000
-      - LIVERELOAD_PORT=35729
-      - DB_HOST=localhost
-      - DB_USER=gamehub
-      - DB_PASS=Saw50812@
-      - DB_NAME=gamehub
-    depends_on:
-      - mssql
-      - mssql-setup
-    command: npm run dev
-    stdin_open: true
-    tty: true
-    networks:
-      - backend
-
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver_db
-    restart: always
+    restart: unless-stopped
     environment:
       SA_PASSWORD: "1qazxsw23EDC"
       ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
     networks:
       - backend
-    volumes: []
+    volumes:
+      - sql_data:/var/opt/mssql
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '1qazxsw23EDC' -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
-  mssql-setup:
-    image: mcr.microsoft.com/mssql-tools
+  mssql-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_init
     depends_on:
-      - mssql
+      mssql:
+        condition: service_healthy
     networks:
       - backend
     volumes:
       - ./docker/init:/scripts:ro
-    entrypoint:
-      - /bin/bash
-      - -c
-      - |
-        for i in {1..30}; do
-          /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -Q "SELECT 1" && break
-          echo "⏳ Aguardando SQL Server inicializar..." && sleep 2
-        done
-        echo "🚀 Executando script de inicialização..."
-        /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${SA_PASSWORD}" -i /scripts/init.sql
+    command: >
+      /bin/bash -c "
+      echo '⏳ Aguardando SQL Server...' &&
+      sleep 3 &&
+      echo '🚀 Criando banco e usuário...' &&
+      /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P '1qazxsw23EDC' -C -i /scripts/init.sql &&
+      echo '✅ Inicialização concluída!'
+      "
+    restart: "no"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_app
+    ports:
+      - "3000:3000"
+      - "35729:35729"
     environment:
-      - SA_PASSWORD=1qazxsw23EDC
+      NODE_ENV: development
+      PORT: 3000
+      LIVERELOAD_PORT: 35729
+      DB_HOST: mssql
+      DB_USER: gamehub
+      DB_PASS: "Saw50812@"
+      DB_NAME: gamehub
+    depends_on:
+      mssql:
+        condition: service_healthy
+      mssql-init:
+        condition: service_completed_successfully
+    networks:
+      - backend
+    command: >
+      sh -c "
+      if [ ! -d node_modules ]; then
+        echo '📦 Instalando dependências...';
+        npm install;
+      fi &&
+      echo '🚀 Iniciando aplicação...' &&
+      npm run dev
+      "
+    volumes:
+      - .:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
 networks:
   backend:
+    driver: bridge
 
 volumes:
   sql_data:

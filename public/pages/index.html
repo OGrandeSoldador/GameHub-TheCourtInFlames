@@ -3,38 +3,43 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/pages/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Games & Dickass </title>
-
+    
+    <title>Página Inicial</title>
+    
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a class="logo" href="index">Logo Uga Games</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Logo de minduca -->
+            <a class="navbar-brand" href="#">Logo</a>
 
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar..." aria-label="Buscar">
+            <!-- Botão hamburguer para desgraça do mobile (mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Conteudo colapsavel -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- busca centralizada -->
+                <form class="d-flex mx-auto" role="search" style="width: 50%;">
+                    <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+                    <button class="btn btn-outline-light" type="submit">Buscar</button>
+                </form>
+
+                <!-- Botoes na direita -->
+                <div class="d-flex">
+                    <a href="create_account" class="btn btn-outline-light me-2">Login</a>
+                    <a href="create_account" class="btn btn-primary">Registrar</a>
+                </div>
             </div>
+        </div>
+    </nav>
 
-            <div class="menu-toggle" id="menu-btn" aria-label="Abrir menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <div class="buttons" id="buttons">
-                <a class="btn btn-login" href="login">Login</a>
-                <a class="btn btn-register" href="register">Registrar</a>
-            </div>
-        </nav>
-    </header>
-
-
+    <!-- Importar scripts sempre com defer -->
+    <script defer src="/js/main.js"></script>
 </body>
-<script src="/pages/js/index.js">
-
-</script>
 
 </html>
