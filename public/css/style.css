@@ -96,11 +96,16 @@ html,body {
 }
 
 .btn-primary {
-    padding: 15px 0;
+    padding: 15px 3px;
     font-weight: 500;
     background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
     border: none;
-    border-radius: 10px;
+    border-radius: 10px;   
+    width: 80px;
+}
+
+#botaologin{
+    background: #212529;
 }
 
 .btn-primary:hover {
