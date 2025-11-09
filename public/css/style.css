@@ -152,3 +152,10 @@ body {
 .form-check-input:focus {
     box-shadow: none !important;
 }
+
+#loginForm.was-validated .form-control:valid,
+#loginForm .form-control.is-valid {
+  border-color: #ced4da !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
