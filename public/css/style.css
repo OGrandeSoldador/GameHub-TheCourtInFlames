@@ -74,10 +74,9 @@ body {
 
 .form-control {
     font-weight: 500;
-    padding: 15px 10px 15px 10px;
+    padding: 10px 15px 10px;
     border-radius: 10px;
     border: 2px solid #dee2e6;
-
 }
 
 .form-control:focus {
@@ -152,8 +151,4 @@ body {
 
 .form-check-input:focus {
     box-shadow: none !important;
-}
-
-input[type="search"] {
-    padding: 0;
 }
