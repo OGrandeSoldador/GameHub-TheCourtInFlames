@@ -7,7 +7,7 @@ $(function () {
 
     if (aba === 'cadastro') {
         const tab = new bootstrap.Tab('#register-tab');
-        tab.show();g
+        tab.show();
         localStorage.removeItem('abrirAba');
     }
 });
