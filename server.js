@@ -5,6 +5,7 @@ import connectLivereload from "connect-livereload";
 import pagesRouter from "./routes/pages.js";
 import { fileURLToPath } from "url";
 import path from "path";
+import apiRoutes from "./src/api/routes/apiRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -67,9 +68,10 @@ app.use((req, res, next) => {
       const js = `
         <script defer src="/js/jquery.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        ${isDev
-          ? `<script defer src="http://localhost:${livereloadPort}/livereload.js?snipver=1"></script>`
-          : ""
+        ${
+          isDev
+            ? `<script defer src="http://localhost:${livereloadPort}/livereload.js?snipver=1"></script>`
+            : ""
         }
       `;
 
@@ -80,6 +82,8 @@ app.use((req, res, next) => {
   };
   next();
 });
+
+app.use("/api", apiRoutes);
 
 app.use("/", pagesRouter);
 
