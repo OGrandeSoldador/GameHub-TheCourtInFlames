@@ -38,14 +38,16 @@
                     <div class="tab-pane fade show active" id="login" role="tabpanel">
                         <form id="loginForm" novalidate>
                             <div class="mb-3 position-relative">
-                                <input type="text" class="form-control" placeholder="Nome de usuário" required/>
+                                <input type="text" class="form-control" placeholder="Nome de usuário" id="username"
+                                    required />
                                 <div class="invalid-feedback">
                                     Informe nome de usuário existente.
                                 </div>
                             </div>
 
                             <div class="mb-3 position-relative">
-                                <input type="password" class="form-control" placeholder="Senha" required/>
+                                <input type="password" class="form-control" placeholder="Senha" id="password"
+                                    required />
                                 <div class="invalid-feedback">
                                     Senha incorreta
                                 </div>
@@ -96,7 +98,7 @@
                             </div>
 
                             <div class="mb-2 position-relative">
-                                <input type="password" class="form-control" id="password" placeholder="Senha" />
+                                <input type="password" class="form-control" placeholder="Senha" />
                                 <i class="bi bi-lock input-icon"></i>
                             </div>
 
