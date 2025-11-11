@@ -1,16 +1,19 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+html,
+body {
+    height: 100%;
 }
 
-#container {
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+#logcad {
     background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    min-height: 100vh;
 }
 
 #card {
@@ -20,6 +23,7 @@
     overflow: hidden;
     width: 450px;
     background-color: #fff;
+    min-height: 80vh;
 }
 
 .card-header {
@@ -73,10 +77,9 @@
 
 .form-control {
     font-weight: 500;
-    padding: 15px 10px 15px 10px;
+    padding: 10px 15px 10px;
     border-radius: 10px;
     border: 2px solid #dee2e6;
-
 }
 
 .form-control:focus {
@@ -97,11 +100,16 @@
 }
 
 .btn-primary {
-    padding: 15px 0;
+    padding: 15px 3px;
     font-weight: 500;
     background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
     border: none;
     border-radius: 10px;
+    width: 80px;
+}
+
+#botaologin {
+    background: #212529;
 }
 
 .btn-primary:hover {
@@ -146,8 +154,4 @@
 
 .form-check-input:focus {
     box-shadow: none !important;
-}
-
-input[type="search"] {
-    padding: 0;
 }
