@@ -1,17 +1,37 @@
 $(function () {
-  const form = document.getElementById('loginForm')
+  const $form = $('#loginForm');
 
-  form.addEventListener('submit', (event) => {
-    // Impede envio real se houver campos inválidos
-    if (!form.checkValidity()) {
-      event.preventDefault()
-      event.stopPropagation()
-      form.classList.add('was-validated')
+  const username = $('#username').val().trim();
+  const password = $('#password').val().trim();
+
+  $form.on('submit', function (event) {
+    if (!$form[0].checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      if (username.length < 3) {
+        const avisoUsuarioCurto = 'Usuário muito curto!';
+        $('#mensagemErroUsuario').text(avisoUsuarioCurto);
+        $('#username').attr('minlength', 4);
+      }
+
+      if (password.length == 0){
+        const avisoSenhaVazia = 'Forneça uma senha!';
+        $('#mensagemErroSenha').text(avisoSenhaVazia);
+        $('#password').val('');
+      } 
+
+      if (password.length < 8){
+        $('#password').attr('minlength', 8);
+        $('#password').val('');
+      }
+
+      $form.addClass('was-validated');
+      console.log($form.val())
+      return;
     }
-    
-    const username = $('#username').val().trim();
-    const password = $('#password').val().trim();
+  });
 
-  })
+  console.log('Usuário:', username);
+  console.log('Senha:', password);
 });
-
