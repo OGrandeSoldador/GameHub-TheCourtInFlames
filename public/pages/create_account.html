@@ -39,7 +39,7 @@
                         <form id="loginForm" novalidate>
                             <div class="mb-3 position-relative">
                                 <input type="text" class="form-control" placeholder="Nome de usuário" id="username"
-                                    required />
+                                    required minlength="4"/>
                                 <div class="invalid-feedback" id="mensagemErroUsuario">
                                     Informe nome de usuário existente.
                                 </div>
@@ -47,7 +47,7 @@
 
                             <div class="mb-3 position-relative">
                                 <input type="password" class="form-control" placeholder="Senha" id="password"
-                                    required/>
+                                    required minlength="8"/>
                                 <div class="invalid-feedback" id="mensagemErroSenha">
                                     Senha incorreta
                                 </div>
