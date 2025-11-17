@@ -14,20 +14,20 @@ $(function () {
       event.preventDefault();
       event.stopPropagation();
 
-      if (userName.length < 3) {
+      if (userName.length < 4 || userName.length > 32) {
         const avisoUsuarioCurto = 'Usuário muito curto, mínimo de 4 caracteres!';
         $('#mensagemErroUsuario').text(avisoUsuarioCurto);
+        $('.bi-person').hide()
       }
 
-      if (passWord.length < 8 && passWord.length > 32) {
+      if (passWord.length < 8 || passWord.length > 32) {
         const avisoSenhaCurta = 'Senha inválida!';
         $('#mensagemErroSenha').text(avisoSenhaCurta);
         $('#password').val('');
       }
 
-      form.addClass('was-validated');
+        form.addClass('was-validated');
     }
   });
 });
-
 
