@@ -67,14 +67,6 @@
     border-bottom: 2px solid #4407ec;
 }
 
-.is-valid {
-    background-image: none !important;
-}
-
-.is-invalid {
-    background-image: none !important;
-}
-
 .form-control {
     font-weight: 500;
     padding: 15px;
@@ -91,31 +83,33 @@
     border: 2px solid #7c5bf3;
 }
 
-#underline-effect{
+#underline-effect {
     height: 4px;
     background-color: #bec1c491;
     width: 100%;
 }
+
 /* ========================================== */
 /* VALIDAÇÃO - ESTADOS DE ERRO E SUCESSO */
 /* ========================================== */
 
 /* Borda VERMELHA quando inválido */
 .form-control.is-invalid {
-    border-color: #dc3545 !important;
+    border-color: #fa5162 !important;
     padding-right: calc(1.5em + 0.75rem);
 }
 
 /* Borda VERDE quando válido */
 .form-control.is-valid {
     border-color: #28a745 !important;
+    background-image: none !important;
     padding-right: calc(1.5em + 0.75rem);
 }
 
 /* Remove hover quando tem erro */
 .form-control.is-invalid:hover,
 .form-control.is-invalid:focus {
-    border-color: #dc3545 !important;
+    border-color: #fa5162 !important;
 }
 
 /* Remove hover quando está válido */
@@ -124,13 +118,30 @@
     border-color: #28a745 !important;
 }
 
+.is-valid {
+    background-image: none !important;
+}
+
+.is-invalid {
+    background-image: none !important;
+}
+
+.form-control:valid {
+    background-image: none !important;
+}
+
+.form-control:invalid {
+    background-image: none !important;
+    border-color: #fa5162 !important;
+}
+
 /* Mensagem de erro */
 .invalid-feedback {
     display: none;
     width: 100%;
     margin-top: 0.25rem;
     font-size: 0.875em;
-    color: #dc3545;
+    color: #fa5162;
     font-weight: 500;
 }
 
@@ -141,7 +152,7 @@
 
 /* Checkbox inválido */
 .form-check-input.is-invalid {
-    border-color: #dc3545 !important;
+    border-color: #fa5162 !important;
 }
 
 .form-check-input.is-invalid~.invalid-feedback {
@@ -165,10 +176,6 @@
     border: none;
     border-radius: 10px;
     width: 80px;
-}
-
-#botaologin {
-    background: #212529;
 }
 
 .btn-primary:hover {
@@ -197,12 +204,6 @@
     text-decoration: none;
     color: #6c4be4da;
     font-weight: 700;
-}
-
-.border-down {
-    background-color: #b1b7bd57;
-    height: 4px;
-    width: 100%;
 }
 
 .form-check-input:checked {

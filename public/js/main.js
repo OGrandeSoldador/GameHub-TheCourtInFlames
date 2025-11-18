@@ -45,22 +45,17 @@ $(function () {
       validate: (value) => value.length >= 8,
       message: "A senha deve ter no mínimo 8 caracteres.",
     },
-    // ---------------------------------------------------------
-    // Adicionar mais validações de senha aqui
-    //
-    // {
-    //   field: inputSenha,
-    //   validate: (value) => /[A-Z]/.test(value),
-    //   message: "A senha deve conter ao menos 1 letra maiúscula.",
-    // },
+    {
+      field: inputSenha,
+      validate: (value) => /[A-Z]/.test(value),
+      message: "A senha deve conter ao menos 1 letra maiúscula.",
+    },
     {
       field: inputSenha,
       validate: (value) => /\d/.test(value),
       message: "A senha deve conter ao menos 1 número.",
     },
-    // ---------------------------------------------------------
   ];
-  console.log("okk");
 
   // Listeners para validação em tempo real
   customValidatorsLogin.forEach(({ field }) => {
@@ -153,6 +148,19 @@ $(function () {
   const inputAceitarTermos = $("#aceitarTermos");
   const btnRegister = $("#handleRegister");
 
+  const objetos = [
+    {
+      nome: "zezin",
+      temFilho: true,
+      message: "Viado"
+    },
+    {
+      nome: "Will",
+      temFilho: false,
+      message: "Miguel"
+    }
+  ];
+
   const customValidatorsRegister = [
     // Validações do USUÁRIO
     {
@@ -160,6 +168,75 @@ $(function () {
       validate: (value) => value.trim().length > 0,
       message: "O usuário é obrigatório.",
     },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => value.trim().length > 3,
+      message: "O usuário deve ter no mínimo 4 caracteres.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => /^[a-zA-Z].*$/.test(value),
+      message: "O usuário deve começar com uma letra.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => !/\s/.test(value),
+      message: "O usuário não pode conter espaços.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => value.length < 16,
+      message: "O usuário deve ter no máximo 15 caracteres.",
+    },
+    // Validação email
+    {
+      field: inputRegisterEmail,
+      validate: (value) => value.length > 0,
+      message: "O email é obrigatório."
+    },
+    {
+      field: inputRegisterEmail,
+      validate: (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
+      message: "Insira um formato de email válido."
+    },
+    // Validações senha
+    {
+      field: inputRegisterPassword,
+      validate: (value) => value.length > 0,
+      message: "A senha é obrigatória."
+    },
+    {
+      field: inputRegisterPassword,
+      validate: (value) => value.length >= 8,
+      message: "A senha deve ter no mínimo 8 caracteres."
+    },
+    {
+      field: inputRegisterPassword,
+      validate: (value) => /[A-Z]/.test(value),
+      message: "A senha deve conter ao menos 1 letra maiúscula."
+    },
+    {
+      field: inputRegisterPassword,
+      validate: (value) => /\d/.test(value),
+      message: "A senha deve conter ao menos 1 número."
+    },
+    // Validação confirmar senha
+    {
+      field: inputRegisterRepeatPassword,
+      validate: (value) => value.length > 0,
+      message: "Confirme a senha."
+    },
+    {
+      field: inputRegisterRepeatPassword,
+      validate: (value) => console.log(inputRegisterPassword == value),
+      message: "As senhas não coincidem."
+    },
+    // Aceitar termos
+    // {
+    //   field: inputAceitarTermos,
+    //   validate: (value) => !value.isChecked(),
+    //   message: "Você precisa aceitar os termos."
+    // }
   ];
 
   customValidatorsRegister.forEach(({ field }) => {
@@ -214,14 +291,14 @@ $(function () {
         if (field.is(":checkbox")) {
           field.siblings(".invalid-feedback").show();
         }
-
         todosValidos = false;
       } else {
         field.addClass("is-valid").removeClass("is-invalid");
-        field.siblings(".invalid-feedback").text("").hide();
+        field.siblings(".invalid-feedback").text("");
       }
 
       camposProcessados.add(fieldId);
+
     });
 
     return todosValidos;
