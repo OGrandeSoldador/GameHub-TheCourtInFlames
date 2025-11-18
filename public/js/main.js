@@ -1,5 +1,3 @@
-const { trim } = require("jquery");
-
 $(function () {
   // ============================================
   // LOGIN
@@ -19,19 +17,23 @@ $(function () {
     {
       field: inputUsuario,
       validate: (value) => value.length > 3,
-      message: "O usuário deve ter no mínimo 4 a 15 caracteres.",
+      message: "O usuário deve ter no mínimo 4 caracteres.",
     },
-    // {
-    //   field: inputUsuario,
-    //   validate: (value) => !/\^[a-zA-Z]/.test(value),
-    //   message: "O usuário deve começar com uma letra.",
-    // },
+    {
+      field: inputUsuario,
+      validate: (value) => /^[a-zA-Z].*$/.test(value),
+      message: "O usuário deve começar com uma letra.",
+    },
     {
       field: inputUsuario,
       validate: (value) => !/\s/.test(value),
       message: "O usuário não pode conter espaços.",
     },
-
+    {
+      field: inputUsuario,
+      validate: (value) => value.length < 16,
+      message: "O usuário deve ter no máximo 15 caracteres.",
+    },
     // Validações da SENHA
     {
       field: inputSenha,
