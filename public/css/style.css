@@ -67,7 +67,11 @@
     border-bottom: 2px solid #4407ec;
 }
 
-.has-validation {
+.is-valid {
+    background-image: none !important;
+}
+
+.is-invalid {
     background-image: none !important;
 }
 
@@ -87,6 +91,11 @@
     border: 2px solid #7c5bf3;
 }
 
+/* #underline-effect{
+    height: 4px;
+    background-color: #bec1c491;
+    width: 100%;
+} */
 /* ========================================== */
 /* VALIDAÇÃO - ESTADOS DE ERRO E SUCESSO */
 /* ========================================== */
@@ -126,7 +135,7 @@
 }
 
 /* Mostra mensagem quando campo é inválido */
-.form-control.is-invalid ~ .invalid-feedback {
+.form-control.is-invalid~.invalid-feedback {
     display: block;
 }
 
@@ -135,7 +144,7 @@
     border-color: #dc3545 !important;
 }
 
-.form-check-input.is-invalid ~ .invalid-feedback {
+.form-check-input.is-invalid~.invalid-feedback {
     display: block;
 }
 

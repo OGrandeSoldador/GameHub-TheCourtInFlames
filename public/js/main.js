@@ -1,3 +1,5 @@
+const { trim } = require("jquery");
+
 $(function () {
   // ============================================
   // LOGIN
@@ -14,6 +16,16 @@ $(function () {
       validate: (value) => value.trim().length > 0,
       message: "O usuário é obrigatório.",
     },
+    {
+      field: inputUsuario,
+      validate: (value) => value.length > 3,
+      message: "O usuário deve ter no mínimo 4 a 15 caracteres.",
+    },
+    // {
+    //   field: inputUsuario,
+    //   validate: (value) => !/\^[a-zA-Z]/.test(value),
+    //   message: "O usuário deve começar com uma letra.",
+    // },
     {
       field: inputUsuario,
       validate: (value) => !/\s/.test(value),
@@ -46,6 +58,7 @@ $(function () {
     },
     // ---------------------------------------------------------
   ];
+  console.log("okk");
 
   // Listeners para validação em tempo real
   customValidatorsLogin.forEach(({ field }) => {
