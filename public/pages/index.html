@@ -36,20 +36,20 @@
                 <div class="tab-content" id="pills-tabContent">
                     <!-- Login -->
                     <div class="tab-pane fade show active" id="login" role="tabpanel">
-                        <form id="loginForm" novalidate>
+                        <div id="loginForm" novalidate>
                             <div class="mb-3 position-relative">
                                 <i class="bi bi-person input-icon"></i>
                                 <input type="text" class="form-control" placeholder="Nome de usuário" id="username"
-                                    required minlength="4"/>
+                                    required/>
                                 <div class="invalid-feedback" id="mensagemErroUsuario">
                                     Informe nome de usuário existente.
                                 </div>
                             </div>
 
                             <div class="mb-3 position-relative">
-                                <i class="bi bi-lock-fill input-icon" id=""></i>
+                                <i class="bi bi-lock-fill input-icon"></i>
                                 <input type="password" class="form-control" placeholder="Senha" id="password"
-                                    required minlength="8"/>
+                                    required/>
                                 <div class="invalid-feedback" id="mensagemErroSenha">
                                     Senha incorreta
                                 </div>
@@ -64,7 +64,7 @@
                                 <a href="#" class="text-link small">Esqueceu a senha?</a>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100 mb-4">
+                            <button class="btn btn-primary w-100 mb-4" id="btnLogin">
                                 <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
                             </button>
 
@@ -82,7 +82,7 @@
                                     <i class="bi bi-github me-1"></i> GitHub
                                 </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
 
                     <!-- Cadastro -->
@@ -139,6 +139,8 @@
 
     <script defer src="../js/login.js"></script>
     <script defer src="../js/main.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 </body>
 
 </html>
