@@ -1,5 +1,7 @@
 $(function () {
-  // ============================================ LOGIN ============================================
+  // ============================================
+  // LOGIN
+  // ============================================
   const formLogin = $("#formLogin")[0];
   const inputUsuario = $("#usuario");
   const inputSenha = $("#senha");
@@ -11,20 +13,25 @@ $(function () {
       validate: (value) => /[A-Z]/.test(value),
       message: "A senha deve conter ao menos 1 letra maiúscula.",
     },
-    {
-      field: inputSenha,
-      validate: (value) => /\d/.test(value),
-      message: "A senha deve conter ao menos 1 número.",
-    },
+    // {
+    //   field: inputSenha,
+    //   validate: (value) => /\d/.test(value),
+    //   message: "A senha deve conter ao menos 1 número.",
+    // },
     {
       field: inputUsuario,
       validate: (value) => !/\s/.test(value),
       message: "O usuário não pode conter espaços.",
     },
+    // {
+    //   field: inputUsuario,
+    //   validate: (value) => /^[A-Za-z]/.test(value),
+    //   message: "O usuário deve começar com uma letra.",
+    // },
     {
       field: inputUsuario,
-      validate: (value) => /^[A-Za-z]/.test(value),
-      message: "O usuário deve começar com uma letra.",
+      validate: (value) => value.length > 3,
+      message: "Deve ter no mínimo 4 caracteres",
     },
     // ---------------------------------------------------------
     // adicionar qualquer nova validação aqui:
@@ -37,31 +44,45 @@ $(function () {
     // ---------------------------------------------------------
   ];
 
+  customValidatorsLogin.forEach(({ field }) => {
+    field.on("input", function () {
+      if ($(formLogin).hasClass("was-validated")) {
+        validarCamposCustomizadosLogin();
+      }
+    });
+  });
+
   function validarCamposCustomizadosLogin() {
     let tudoValido = true;
     customValidatorsLogin.forEach(({ field, validate, message }) => {
-      const valor = field.val().trim();
+      const valor = field.val();
+
       if (!validate(valor)) {
         field[0].setCustomValidity(message);
+        field.addClass("is-invalid").removeClass("is-valid");
+        field.siblings(".invalid-feedback").text(message);
+
         tudoValido = false;
       } else {
         field[0].setCustomValidity("");
+        field.addClass("is-valid").removeClass("is-invalid");
       }
     });
+
     return tudoValido;
   }
 
   btnLogin.on("click", function () {
-    const validoNativo = formLogin.checkValidity();
     const validoCustom = validarCamposCustomizadosLogin();
+    const validoNativo = formLogin.checkValidity();
     $(formLogin).addClass("was-validated");
 
     if (!validoNativo || !validoCustom) {
-      console.warn("Validação de login falhou");
+      console.warn("⚠️ Validação de login falhou");
       return;
     }
 
-    console.log("Login válido! Enviando para API...");
+    console.log("✅ Login válido! Enviando para API...");
 
     // REQUISIÇÃO
     /*
@@ -81,7 +102,9 @@ $(function () {
     */
   });
 
-  // ============================================ REGISTRO ============================================
+  // ============================================
+  // REGISTRO
+  // ============================================
   const formRegister = $("#formRegister")[0];
   const inputRegisterUsuario = $("#registerUsuario");
   const inputRegisterEmail = $("#registerEmail");
@@ -96,7 +119,7 @@ $(function () {
       message: "As senhas não coincidem.",
     },
     // ---------------------------------------------------------
-    // adicionar novas validação de registro aqui
+    // adicionar qualquer nova validação de registro aqui:
     //
     // {
     //   field: inputRegisterPassword,
@@ -106,31 +129,47 @@ $(function () {
     // ---------------------------------------------------------
   ];
 
+  // Adiciona listeners para validação em tempo real
+  customValidatorsRegister.forEach(({ field }) => {
+    field.on("input", function () {
+      if ($(formRegister).hasClass("was-validated")) {
+        validarCamposCustomizadosRegister();
+      }
+    });
+  });
+
   function validarCamposCustomizadosRegister() {
     let tudoValido = true;
+
     customValidatorsRegister.forEach(({ field, validate, message }) => {
       const valor = field.val().trim();
+
       if (!validate(valor)) {
         field[0].setCustomValidity(message);
+        field.addClass("is-invalid").removeClass("is-valid");
+        field.siblings(".invalid-feedback").text(message);
+
         tudoValido = false;
       } else {
         field[0].setCustomValidity("");
+        field.addClass("is-valid").removeClass("is-invalid");
       }
     });
+
     return tudoValido;
   }
 
   btnRegister.on("click", function () {
-    const validoNativo = formRegister.checkValidity();
     const validoCustom = validarCamposCustomizadosRegister();
+    const validoNativo = formRegister.checkValidity();
     $(formRegister).addClass("was-validated");
 
     if (!validoNativo || !validoCustom) {
-      console.warn("Validação de registro falhou");
+      console.warn("⚠️ Validação de registro falhou");
       return;
     }
 
-    console.log("Registro válido! Enviando para API...");
+    console.log("✅ Registro válido! Enviando para API...");
 
     // REQUISIÇÃO
     /*
