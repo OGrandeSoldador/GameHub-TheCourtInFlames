@@ -7,6 +7,16 @@ $(function () {
 
   const customValidatorsLogin = [
     {
+      field: inputUsuario,
+      validate: (value) => !/\s/.test(value),       // se quiser usar function normal - validate: function (value){}
+      message: "O usuário não pode conter espaços.",
+    },
+    {
+      field: inputUsuario,
+      validate: (value) => /^[A-Za-z]/.test(value),
+      message: "O usuário deve começar com uma letra.",
+    },
+    {
       field: inputSenha,
       validate: (value) => /[A-Z]/.test(value),
       message: "A senha deve conter ao menos 1 letra maiúscula.",
@@ -17,15 +27,10 @@ $(function () {
       message: "A senha deve conter ao menos 1 número.",
     },
     {
-      field: inputUsuario,
-      validate: (value) => !/\s/.test(value),
-      message: "O usuário não pode conter espaços.",
-    },
-    {
-      field: inputUsuario,
-      validate: (value) => /^[A-Za-z]/.test(value),
-      message: "O usuário deve começar com uma letra.",
-    },
+      field: inputSenha,
+      validate: (value) => value.length >= 8,
+      message: "A senha deve ter no mínimo 8 caracteres."
+    }
     // ---------------------------------------------------------
     // adicionar qualquer nova validação aqui:
     //
@@ -43,6 +48,7 @@ $(function () {
       const valor = field.val().trim();
       if (!validate(valor)) {
         field[0].setCustomValidity(message);
+        field.siblings(".invalid-feedback").text(message);
         tudoValido = false;
       } else {
         field[0].setCustomValidity("");
@@ -68,7 +74,7 @@ $(function () {
     instance_api.post("/login", {
       usuario: inputUsuario.val().trim(),
       senha: inputSenha.val().trim(),
-      lembrar: $("#lembrar").is(":checked")
+      lembrar: $("#lembrar").is(":checked")                       
     })
     .then(res => {
       console.log("LOGIN OK", res.data);
@@ -78,6 +84,7 @@ $(function () {
     .catch(err => {
       console.error("Erro no login", err);
     });
+    //         ============= Fazer uma função para recolher os dados do usuario e o registro =============
     */
   });
 
@@ -112,6 +119,7 @@ $(function () {
       const valor = field.val().trim();
       if (!validate(valor)) {
         field[0].setCustomValidity(message);
+        field.siblings(".invalid-feedback").text(message);
         tudoValido = false;
       } else {
         field[0].setCustomValidity("");
