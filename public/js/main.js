@@ -8,42 +8,46 @@ $(function () {
   const btnLogin = $("#handleLogin");
 
   const customValidatorsLogin = [
+    // Validações do USUÁRIO
     {
-      field: inputSenha,
-      validate: (value) => /[A-Z]/.test(value),
-      message: "A senha deve conter ao menos 1 letra maiúscula.",
+      field: inputUsuario,
+      validate: (value) => value.trim().length > 0,
+      message: "O usuário é obrigatório.",
     },
-    // {
-    //   field: inputSenha,
-    //   validate: (value) => /\d/.test(value),
-    //   message: "A senha deve conter ao menos 1 número.",
-    // },
     {
       field: inputUsuario,
       validate: (value) => !/\s/.test(value),
       message: "O usuário não pode conter espaços.",
     },
-    // {
-    //   field: inputUsuario,
-    //   validate: (value) => /^[A-Za-z]/.test(value),
-    //   message: "O usuário deve começar com uma letra.",
-    // },
+
+    // Validações da SENHA
     {
-      field: inputUsuario,
-      validate: (value) => value.length > 3,
-      message: "Deve ter no mínimo 4 caracteres",
+      field: inputSenha,
+      validate: (value) => value.length > 0,
+      message: "A senha é obrigatória.",
+    },
+    {
+      field: inputSenha,
+      validate: (value) => value.length >= 8,
+      message: "A senha deve ter no mínimo 8 caracteres.",
     },
     // ---------------------------------------------------------
-    // adicionar qualquer nova validação aqui:
+    // Adicionar mais validações de senha aqui
     //
     // {
     //   field: inputSenha,
-    //   validate: (value) => value.length >= 8,
-    //   message: "A senha deve ter no mínimo 8 caracteres."
-    // }
+    //   validate: (value) => /[A-Z]/.test(value),
+    //   message: "A senha deve conter ao menos 1 letra maiúscula.",
+    // },
+    {
+      field: inputSenha,
+      validate: (value) => /\d/.test(value),
+      message: "A senha deve conter ao menos 1 número.",
+    },
     // ---------------------------------------------------------
   ];
 
+  // Listeners para validação em tempo real
   customValidatorsLogin.forEach(({ field }) => {
     field.on("input", function () {
       if ($(formLogin).hasClass("was-validated")) {
@@ -53,31 +57,53 @@ $(function () {
   });
 
   function validarCamposCustomizadosLogin() {
-    let tudoValido = true;
+    let todosValidos = true;
+    const camposProcessados = new Set();
+
     customValidatorsLogin.forEach(({ field, validate, message }) => {
       const valor = field.val();
+      const fieldId = field.attr("id");
 
-      if (!validate(valor)) {
-        field[0].setCustomValidity(message);
-        field.addClass("is-invalid").removeClass("is-valid");
-        field.siblings(".invalid-feedback").text(message);
-
-        tudoValido = false;
-      } else {
-        field[0].setCustomValidity("");
-        field.addClass("is-valid").removeClass("is-invalid");
+      if (camposProcessados.has(fieldId)) {
+        return;
       }
+
+      const validacoesDoCampo = customValidatorsLogin.filter(
+        (v) => v.field.attr("id") === fieldId
+      );
+
+      let primeiroErro = null;
+      let todasPassaram = true;
+
+      for (const validacao of validacoesDoCampo) {
+        if (!validacao.validate(valor)) {
+          if (!primeiroErro) {
+            primeiroErro = validacao.message;
+          }
+          todasPassaram = false;
+        }
+      }
+
+      if (!todasPassaram) {
+        field.addClass("is-invalid").removeClass("is-valid");
+        field.siblings(".invalid-feedback").text(primeiroErro);
+        todosValidos = false;
+      } else {
+        field.addClass("is-valid").removeClass("is-invalid");
+        field.siblings(".invalid-feedback").text("");
+      }
+
+      camposProcessados.add(fieldId);
     });
 
-    return tudoValido;
+    return todosValidos;
   }
 
   btnLogin.on("click", function () {
-    const validoCustom = validarCamposCustomizadosLogin();
-    const validoNativo = formLogin.checkValidity();
     $(formLogin).addClass("was-validated");
+    const valido = validarCamposCustomizadosLogin();
 
-    if (!validoNativo || !validoCustom) {
+    if (!valido) {
       console.warn("⚠️ Validação de login falhou");
       return;
     }
@@ -93,8 +119,7 @@ $(function () {
     })
     .then(res => {
       console.log("LOGIN OK", res.data);
-      // Redirecionar:
-      // window.location.href = "/dashboard";
+      window.location.href = "/dashboard";
     })
     .catch(err => {
       console.error("Erro no login", err);
@@ -110,61 +135,88 @@ $(function () {
   const inputRegisterEmail = $("#registerEmail");
   const inputRegisterPassword = $("#registerPassword");
   const inputRegisterRepeatPassword = $("#registerRepeatPassword");
+  const inputAceitarTermos = $("#aceitarTermos");
   const btnRegister = $("#handleRegister");
 
   const customValidatorsRegister = [
+    // Validações do USUÁRIO
     {
-      field: inputRegisterRepeatPassword,
-      validate: (value) => value === inputRegisterPassword.val(),
-      message: "As senhas não coincidem.",
+      field: inputRegisterUsuario,
+      validate: (value) => value.trim().length > 0,
+      message: "O usuário é obrigatório.",
     },
-    // ---------------------------------------------------------
-    // adicionar qualquer nova validação de registro aqui:
-    //
-    // {
-    //   field: inputRegisterPassword,
-    //   validate: (value) => /[A-Z]/.test(value),
-    //   message: "A senha deve conter ao menos 1 letra maiúscula."
-    // }
-    // ---------------------------------------------------------
   ];
 
-  // Adiciona listeners para validação em tempo real
   customValidatorsRegister.forEach(({ field }) => {
-    field.on("input", function () {
+    field.on("input change", function () {
       if ($(formRegister).hasClass("was-validated")) {
         validarCamposCustomizadosRegister();
       }
     });
   });
 
+  inputRegisterPassword.on("input", function () {
+    if (
+      $(formRegister).hasClass("was-validated") &&
+      inputRegisterRepeatPassword.val().length > 0
+    ) {
+      validarCamposCustomizadosRegister();
+    }
+  });
+
   function validarCamposCustomizadosRegister() {
-    let tudoValido = true;
+    let todosValidos = true;
+    const camposProcessados = new Set();
 
     customValidatorsRegister.forEach(({ field, validate, message }) => {
-      const valor = field.val().trim();
+      const valor = field.val();
+      const fieldId = field.attr("id");
 
-      if (!validate(valor)) {
-        field[0].setCustomValidity(message);
-        field.addClass("is-invalid").removeClass("is-valid");
-        field.siblings(".invalid-feedback").text(message);
-
-        tudoValido = false;
-      } else {
-        field[0].setCustomValidity("");
-        field.addClass("is-valid").removeClass("is-invalid");
+      if (camposProcessados.has(fieldId)) {
+        return;
       }
+
+      const validacoesDoCampo = customValidatorsRegister.filter(
+        (v) => v.field.attr("id") === fieldId
+      );
+
+      let primeiroErro = null;
+      let todasPassaram = true;
+
+      for (const validacao of validacoesDoCampo) {
+        if (!validacao.validate(valor)) {
+          if (!primeiroErro) {
+            primeiroErro = validacao.message;
+          }
+          todasPassaram = false;
+        }
+      }
+
+      if (!todasPassaram) {
+        field.addClass("is-invalid").removeClass("is-valid");
+        field.siblings(".invalid-feedback").text(primeiroErro);
+
+        if (field.is(":checkbox")) {
+          field.siblings(".invalid-feedback").show();
+        }
+
+        todosValidos = false;
+      } else {
+        field.addClass("is-valid").removeClass("is-invalid");
+        field.siblings(".invalid-feedback").text("").hide();
+      }
+
+      camposProcessados.add(fieldId);
     });
 
-    return tudoValido;
+    return todosValidos;
   }
 
   btnRegister.on("click", function () {
-    const validoCustom = validarCamposCustomizadosRegister();
-    const validoNativo = formRegister.checkValidity();
     $(formRegister).addClass("was-validated");
+    const valido = validarCamposCustomizadosRegister();
 
-    if (!validoNativo || !validoCustom) {
+    if (!valido) {
       console.warn("⚠️ Validação de registro falhou");
       return;
     }
@@ -177,12 +229,11 @@ $(function () {
       usuario: inputRegisterUsuario.val().trim(),
       email: inputRegisterEmail.val().trim(),
       senha: inputRegisterPassword.val().trim(),
-      aceitouTermos: $("#aceitarTermos").is(":checked")
+      aceitouTermos: inputAceitarTermos.is(":checked")
     })
     .then(res => {
       console.log("REGISTRO OK", res.data);
-      // Redirecionar ou trocar para a tab de login:
-      // $("#login-tab").tab("show");
+      $("#login-tab").tab("show");
     })
     .catch(err => {
       console.error("Erro no registro", err);

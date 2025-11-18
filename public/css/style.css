@@ -26,7 +26,7 @@
     background: linear-gradient(135deg, #7b2ff7, #4e6cf7);
     color: rgba(255, 255, 255, 0.918);
     text-align: center;
-    padding: 50px 40px
+    padding: 50px 40px;
 }
 
 .card-header h4 {
@@ -50,7 +50,6 @@
     color: #6c757d;
     border-radius: 0;
     font-weight: 500;
-
 }
 
 .border-bottom {
@@ -87,6 +86,60 @@
 .form-control:hover {
     border: 2px solid #7c5bf3;
 }
+
+/* ========================================== */
+/* VALIDAÇÃO - ESTADOS DE ERRO E SUCESSO */
+/* ========================================== */
+
+/* Borda VERMELHA quando inválido */
+.form-control.is-invalid {
+    border-color: #dc3545 !important;
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+/* Borda VERDE quando válido */
+.form-control.is-valid {
+    border-color: #28a745 !important;
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+/* Remove hover quando tem erro */
+.form-control.is-invalid:hover,
+.form-control.is-invalid:focus {
+    border-color: #dc3545 !important;
+}
+
+/* Remove hover quando está válido */
+.form-control.is-valid:hover,
+.form-control.is-valid:focus {
+    border-color: #28a745 !important;
+}
+
+/* Mensagem de erro */
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+    font-weight: 500;
+}
+
+/* Mostra mensagem quando campo é inválido */
+.form-control.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+/* Checkbox inválido */
+.form-check-input.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.form-check-input.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+/* ========================================== */
 
 .input-icon {
     position: absolute;
@@ -141,7 +194,6 @@
     background-color: #b1b7bd57;
     height: 4px;
     width: 100%;
-
 }
 
 .form-check-input:checked {

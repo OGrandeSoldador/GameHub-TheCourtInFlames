@@ -17,7 +17,7 @@
 
             <div class="card-body p-4 mb-2 mt-2">
                 <!-- Tabs -->
-                <ul class="nav nav-pills mb-4 justify-content-left  position-relative" id="pills-tab" role="tablist">
+                <ul class="nav nav-pills mb-4 justify-content-left position-relative" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login"
                             type="button" role="tab">
@@ -36,18 +36,17 @@
                 <div class="tab-content" id="pills-tabContent">
                     <!-- Login -->
                     <div class="tab-pane fade show active" id="login" role="tabpanel">
-                        <form id="formLogin" class="needs-validation" novalidate>
+                        <form id="formLogin">
 
                             <div class="mb-3 position-relative">
                                 <i class="bi bi-person input-icon"></i>
-                                <input pattern="^[^\s]+$" type="text" id="usuario" class="form-control"
-                                    placeholder="Nome de usuário" required minlength="4" maxlength="15" />
+                                <input type="text" id="usuario" class="form-control" placeholder="Nome de usuário" />
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3 position-relative">
                                 <i class="bi bi-lock input-icon"></i>
-                                <input type="password" id="senha" class="form-control" placeholder="Senha" required />
+                                <input type="password" id="senha" class="form-control" placeholder="Senha" />
                                 <div class="invalid-feedback"></div>
                             </div>
 
@@ -65,7 +64,6 @@
 
                         </form>
 
-                        <!-- <button id="xiosTeste" class="btn btn-success">Teste</button> -->
                         <div class="d-flex align-items-center justify-content-between mb-4 text-muted">
                             <span class="border-top border-2 flex-grow-1 me-2"></span>
                             <small>ou continue com</small>
@@ -80,44 +78,41 @@
                                 <i class="bi bi-github me-1"></i> GitHub
                             </button>
                         </div>
-                        </form>
                     </div>
 
                     <!-- Cadastro -->
                     <div class="tab-pane fade" id="register" role="tabpanel">
-                        <form id="formRegister" class="needs-validation" novalidate>
+                        <form id="formRegister">
 
                             <div class="mb-3 position-relative">
                                 <i class="bi bi-person input-icon"></i>
                                 <input type="text" id="registerUsuario" class="form-control"
-                                    placeholder="Nome de usuário" required minlength="4" maxlength="32" />
+                                    placeholder="Nome de usuário" />
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3 position-relative">
                                 <i class="bi bi-envelope input-icon"></i>
-                                <input type="email" id="registerEmail" class="form-control" placeholder="Email"
-                                    required />
+                                <input type="email" id="registerEmail" class="form-control" placeholder="Email" />
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-2 position-relative">
                                 <i class="bi bi-lock input-icon"></i>
-                                <input type="password" id="registerPassword" class="form-control" placeholder="Senha"
-                                    required />
+                                <input type="password" id="registerPassword" class="form-control" placeholder="Senha" />
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3 position-relative">
                                 <i class="bi bi-lock-fill input-icon"></i>
                                 <input type="password" id="registerRepeatPassword" class="form-control"
-                                    placeholder="Confirmar senha" required />
+                                    placeholder="Confirmar senha" />
                                 <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="align-items-center mb-4">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="aceitarTermos" required />
+                                    <input type="checkbox" class="form-check-input" id="aceitarTermos" />
                                     <label class="form-check-label text-muted" for="aceitarTermos">
                                         Aceito os <a href="#" class="text-link small">termos de uso</a> e
                                         <a href="#" class="text-link small">política de privacidade</a>
