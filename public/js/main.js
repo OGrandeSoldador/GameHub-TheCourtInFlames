@@ -148,19 +148,6 @@ $(function () {
   const inputAceitarTermos = $("#aceitarTermos");
   const btnRegister = $("#handleRegister");
 
-  const objetos = [
-    {
-      nome: "zezin",
-      temFilho: true,
-      message: "Viado"
-    },
-    {
-      nome: "Will",
-      temFilho: false,
-      message: "Miguel"
-    }
-  ];
-
   const customValidatorsRegister = [
     // Validações do USUÁRIO
     {

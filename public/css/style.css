@@ -83,6 +83,7 @@
     border: 2px solid #7c5bf3;
 }
 
+
 #underline-effect {
     height: 4px;
     background-color: #bec1c491;
@@ -125,6 +126,15 @@
 .form-control:invalid {
     background-image: none !important;
     border-color: #fa5162 !important;
+}
+
+#usuario.form-control.is-valid:hover,
+#usuario.form-control.is-valid:focus,
+#usuario.form-control.is-valid,
+#senha.form-control.is-valid:hover,
+#senha.form-control.is-valid:focus,
+#senha.form-control.is-valid {
+    border-color: #dee2e6 !important;
 }
 
 /* Mensagem de erro */
