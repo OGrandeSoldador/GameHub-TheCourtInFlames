@@ -228,15 +228,15 @@ $(function () {
     },
     {
       field: inputRegisterRepeatPassword,
-      validate: (value) => console.log(inputRegisterPassword == value),
+      validate: (value) => inputRegisterPassword.val() === value,
       message: "As senhas não coincidem."
     },
     // Aceitar termos
-    // {
-    //   field: inputAceitarTermos,
-    //   validate: (value) => !value.isChecked(),
-    //   message: "Você precisa aceitar os termos."
-    // }
+    {
+      field: inputAceitarTermos,
+      validate: (value) => value,
+      message: "Você precisa aceitar os termos."
+    }
   ];
 
   customValidatorsRegister.forEach(({ field }) => {
@@ -261,7 +261,7 @@ $(function () {
     const camposProcessados = new Set();
 
     customValidatorsRegister.forEach(({ field, validate, message }) => {
-      const valor = field.val();
+      const valor = field.is(':checkbox') ? field.is(':checked') : field.val();
       const fieldId = field.attr("id");
 
       if (camposProcessados.has(fieldId)) {

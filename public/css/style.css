@@ -118,14 +118,6 @@
     border-color: #28a745 !important;
 }
 
-.is-valid {
-    background-image: none !important;
-}
-
-.is-invalid {
-    background-image: none !important;
-}
-
 .form-control:valid {
     background-image: none !important;
 }
