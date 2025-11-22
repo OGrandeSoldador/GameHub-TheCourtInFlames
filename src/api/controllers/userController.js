@@ -7,9 +7,9 @@ export const userController = {
     try {
       const users = await userService.getAll();
 
-      return res.json(success("Usuários encontrados".users));
+      return res.json(success("Usuários encontrados", users));
     } catch (err) {
-      return res.status(500).json(error("Erro ao buscar todos os usuários"));
+      return res.status(500).json(error("Erro ao buscar todos os usuários", err));
     }
   },
 
@@ -28,7 +28,10 @@ export const userController = {
     try {
       const user = await userService.getById(req.params.id);
 
-      if (!user) return res.status(404).json(error("Usuário não encontrado"));
+      if (!user) {
+        return res.status(404).json(error("Usuário não encontrado"));
+      }
+
       return res.json(success("Usuário encontrado", user));
     } catch (err) {
       return res

@@ -121,7 +121,7 @@ $(function () {
     console.log("✅ Login válido! Enviando para API...");
 
     // REQUISIÇÃO
-    /*
+    
     instance_api.post("/login", {
       usuario: inputUsuario.val().trim(),
       senha: inputSenha.val().trim(),
@@ -134,7 +134,7 @@ $(function () {
     .catch(err => {
       console.error("Erro no login", err);
     });
-    */
+    
   });
 
   // ============================================
@@ -302,21 +302,21 @@ $(function () {
 
     console.log("✅ Registro válido! Enviando para API...");
 
-    // REQUISIÇÃO
-    /*
+    // /-----/ /-----/ REQUISIÇÃO /-----/ /-----/ //
+
     instance_api.post("/register", {
       usuario: inputRegisterUsuario.val().trim(),
       email: inputRegisterEmail.val().trim(),
       senha: inputRegisterPassword.val().trim(),
       aceitouTermos: inputAceitarTermos.is(":checked")
     })
-    .then(res => {
-      console.log("REGISTRO OK", res.data);
-      $("#login-tab").tab("show");
-    })
-    .catch(err => {
-      console.error("Erro no registro", err);
-    });
-    */
+      .then(res => {
+        console.log("REGISTRO OK", res.data);
+        $("#login-tab").tab("show");
+      })
+      .catch(err => {
+        console.error("Erro no registro", err);
+      });
+
   });
 });
