@@ -1,6 +1,8 @@
 import { userService } from "../services/userService.js";
 import { success, error } from "../utils/responseHandler.js";
 import myJson from "../../../customers.js";
+import bcryptData from "../../../hash.js";
+
 
 export const userController = {
   // -------------------- funções de exemplo para popular um controller  -------------------- \\
@@ -18,8 +20,13 @@ export const userController = {
     try {
       const { usuario, senha } = req.body;
 
+      const userExist = await myJson.findUsername(usuario);
       const resultado = await myJson.findUser(usuario, senha)
-
+      
+      if (!userExist) {
+        return res.status(401).json(error("Nome de usuário não registrado"));
+      }
+      
       if (!resultado) {
         return res.status(401).json(error("Usuário ou senha incorretos"));
       }
@@ -32,8 +39,24 @@ export const userController = {
   },
 
   createUser: async (req, res) => {
+    const { usuario, email, senha, aceitarTermos } = req.body;
+
+    const userNameFound = await myJson.findUsername(usuario);
+    const userEmailFound = await myJson.findEmail(email);
+
+    // verifica se o nome de usuario ja existe
+    if (userNameFound) {
+      return res.status(400).json(error("Nome de usuário já está em uso!"));
+    };
+    // verifica se o email ja existe
+    if (userEmailFound) {
+      return res.status(400).json(error("Email já está em uso!"));
+    };
+
+    // as duas condições acima passarem, eu tento:
     try {
-      const { usuario, email, senha, aceitarTermos } = req.body;
+
+      const hashedPassword = await bcryptData.bcryptPassword(senha);
 
       const newId = await myJson.readJSON() + 1;
 
@@ -41,7 +64,7 @@ export const userController = {
         id: newId,
         usuario,
         email,
-        senha,
+        senha: hashedPassword,
         aceitarTermos,
       };
 

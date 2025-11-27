@@ -1,23 +1,9 @@
 [
   {
     "id": 1,
-    "usuario": "maskeik",
-    "email": "maskeik@gmail.com",
-    "senha": "Maskeik123",
-    "aceitarTermos": true
-  },
-  {
-    "id": 2,
     "usuario": "Zezin",
     "email": "zezin@gmail.com",
-    "senha": "Zezin123",
-    "aceitarTermos": true
-  },
-  {
-    "id": 3,
-    "usuario": "Alek",
-    "email": "alekzin@gmail.com",
-    "senha": "Alek1234",
+    "senha": "$2b$10$bsokS9eBckkhbFIFPMn7guRbiOai1zB3w.UAFYtYzrpz3Ty/O8w3C",
     "aceitarTermos": true
   }
 ]

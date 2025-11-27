@@ -388,8 +388,11 @@ $(function () {
         $("#login-tab").tab("show");
       })
       .catch((error) => {
-        console.error("❌ Erro no registro:", error);
-        alert("Ocorreu um erro ao registrar. Verifique o console.");
+        toastr.error("", `${error.message}`, {
+          "positionClass": "toast-top-center"
+        });
+        // console.error("❌ Erro no registro:", error);
+        // alert("Ocorreu um erro ao registrar. Verifique o console.");
       });
   });
 });

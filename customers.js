@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import bcryptData from "./hash.js";
 
 const path = "./customersData.json"
 
@@ -13,13 +14,35 @@ export const myJson = {
         const json = JSON.parse(data);
         return json.length;
     },
-    async findUser(nome, senha) {
+    async findUser(nome, password) {
         const json = JSON.parse(await fs.readFile(path, "utf8"));
-        console.log(json);
 
-        const userExist = json.find(user => user.usuario === nome && user.senha === senha);
+        const userExist = json.find(user => user.usuario === nome);
         if (userExist) {
-            return userExist;
+            const verifyPassword = await bcryptData.comparePassword(password, userExist.senha);
+            if (verifyPassword) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+    async findUsername(nome) {
+        const json = JSON.parse(await fs.readFile(path, "utf8"));
+        const userExist = json.find(user => user.usuario === nome);
+        if (userExist) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    async findEmail(userEmail) {
+        const json = JSON.parse(await fs.readFile(path, "utf8"));
+        const emailExist = json.find(user => user.email === userEmail);
+        if (emailExist) {
+            return true;
         } else {
             return false;
         }
