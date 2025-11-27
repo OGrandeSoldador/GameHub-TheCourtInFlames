@@ -37,7 +37,11 @@ if (process.env.NODE_ENV === "dev") {
   );
 }
 
-// 📂 Servir arquivos estáticos da pasta 'public'
+// Middleware para parsear JSON no corpo das requisições
+app.use(express.json());
+
+app.use("/api", apiRoutes);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
@@ -83,11 +87,10 @@ app.use((req, res, next) => {
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Livereload -->
-${
-  isDev
-    ? `<script defer src="http://localhost:${livereloadPort}/livereload.js?snipver=1"></script>`
-    : ""
-}
+${isDev
+          ? `<script defer src="http://localhost:${livereloadPort}/livereload.js?snipver=1"></script>`
+          : ""
+        }
 `;
 
       body = body.replace("</head>", `${css}${js}</head>`);
@@ -98,8 +101,6 @@ ${
 
   next();
 });
-
-app.use("/api", apiRoutes);
 
 app.use("/", pagesRouter);
 

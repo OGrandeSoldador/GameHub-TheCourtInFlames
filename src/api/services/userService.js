@@ -16,8 +16,8 @@ export const userService = {
     const { name, email } = data;
     const [result] = await db.query(
       "INSERT INTO users (name, email) VALUES (?, ?)",
-      [name, email]
+      [name, email] 
     );
-    return { id: result.insertId, name, email };
+    return { id: result.insertId, name: usuario, email };
   },
 };
