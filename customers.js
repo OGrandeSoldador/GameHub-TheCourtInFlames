@@ -9,7 +9,7 @@ export const myJson = {
         await fs.writeFile(path, JSON.stringify(json, null, 2));
     },
     async readJSON() {
-        const data = await fs.readFile("./customersData.json", "utf8");
+        const data = await fs.readFile(path, "utf8");
         const json = JSON.parse(data);
         return json.length;
     },

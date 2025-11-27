@@ -141,10 +141,18 @@ $(function () {
         return response.json();
       })
       .then((data) => {
-        alert("Usuario existe no banco de dados");
 
-        console.log(data.status);
-
+        if (data.status == true) {
+          toastr.success("", `${data.message}`, {
+            "positionClass": "toast-top-center",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "progressBar": true,
+            "timeOut": 3000
+          });
+        }
         // reseta os campos do form
         formLogin.reset();
 
@@ -154,23 +162,24 @@ $(function () {
 
       })
       .catch((error) => {
-        console.error("Erro no login:", error);
-        alert("Ocorreu um erro ao tentar logar. Verifique o console.");
+        toastr.error("", `${error.message}`, {
+          "positionClass": "toast-top-center"
+        });
       });
     // REQUISIÇÃO
 
-    instance_api.post("/login", {
-      usuario: inputUsuario.val().trim(),
-      senha: inputSenha.val().trim(),
-      lembrar: $("#lembrar").is(":checked")
-    })
-      .then(res => {
-        console.log("LOGIN OK", res.data);
-        window.location.href = "/dashboard";
-      })
-      .catch(err => {
-        console.error("Erro no login", err);
-      });
+    // instance_api.post("/login", {
+    //   usuario: inputUsuario.val().trim(),
+    //   senha: inputSenha.val().trim(),
+    //   lembrar: $("#lembrar").is(":checked")
+    // })
+    //   .then(res => {
+    //     console.log("LOGIN OK", res.data);
+    //     window.location.href = "/dashboard";
+    //   })
+    //   .catch(err => {
+    //     console.error("Erro no login", err);
+    //   });
 
   });
 
@@ -364,7 +373,9 @@ $(function () {
         return response.json();
       })
       .then(() => {
-        alert("Usuário registrado com sucesso!");
+        toastr.success("", "Registro realizado com sucesso", {
+          "positionClass": "toast-top-center"
+        })
 
         // reseta os campos do form
         formRegister.reset();

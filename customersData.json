@@ -1,27 +1,20 @@
 [
   {
     "id": 1,
-    "usuario": "Sundraia",
-    "email": "sundraia@gmail.com",
-    "senha": "Sundria123",
+    "usuario": "maskeik",
+    "email": "maskeik@gmail.com",
+    "senha": "Maskeik123",
     "aceitarTermos": true
   },
   {
     "id": 2,
-    "usuario": "zezin",
+    "usuario": "Zezin",
     "email": "zezin@gmail.com",
     "senha": "Zezin123",
     "aceitarTermos": true
   },
   {
     "id": 3,
-    "usuario": "deniels",
-    "email": "deniels@hotmail.com",
-    "senha": "Daniboy123",
-    "aceitarTermos": true
-  },
-  {
-    "id": 4,
     "usuario": "Alek",
     "email": "alekzin@gmail.com",
     "senha": "Alek1234",

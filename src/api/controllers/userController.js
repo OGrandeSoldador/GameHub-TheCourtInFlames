@@ -17,14 +17,14 @@ export const userController = {
   verifyUser: async (req, res) => {
     try {
       const { usuario, senha } = req.body;
-    
+
       const resultado = await myJson.findUser(usuario, senha)
 
       if (!resultado) {
         return res.status(401).json(error("Usuário ou senha incorretos"));
       }
 
-      return res.json(success("Usuário verificado com sucesso!", resultado));
+      return res.json(success("Usuário verificado com sucesso!"));
 
     } catch (err) {
       return res.status(500).json(error("Erro ao verificar usuário!", err));
@@ -48,8 +48,6 @@ export const userController = {
       // const user = await userService.create(userData);
 
       await myJson.addToJSON(userData);
-
-      // await myJson.readJSON();
 
       return res.json(success("Usuário criado com sucesso!"));
     } catch (err) {
