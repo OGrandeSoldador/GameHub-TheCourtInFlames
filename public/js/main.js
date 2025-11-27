@@ -158,20 +158,20 @@ $(function () {
         alert("Ocorreu um erro ao tentar logar. Verifique o console.");
       });
     // REQUISIÇÃO
-    /*
+
     instance_api.post("/login", {
       usuario: inputUsuario.val().trim(),
       senha: inputSenha.val().trim(),
       lembrar: $("#lembrar").is(":checked")
     })
-    .then(res => {
-      console.log("LOGIN OK", res.data);
-      window.location.href = "/dashboard";
-    })
-    .catch(err => {
-      console.error("Erro no login", err);
-    });
-    */
+      .then(res => {
+        console.log("LOGIN OK", res.data);
+        window.location.href = "/dashboard";
+      })
+      .catch(err => {
+        console.error("Erro no login", err);
+      });
+
   });
 
   // ============================================

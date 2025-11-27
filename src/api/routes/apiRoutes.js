@@ -11,4 +11,6 @@ router.post("/register", userController.createUser);
 
 router.get("/users/:id", userController.getUserById);
 
+router.post("/createUser", userController.createUser);
+
 export default router;
