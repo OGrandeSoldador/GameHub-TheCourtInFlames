@@ -1,5 +1,6 @@
 import { userService } from "../services/userService.js";
 import { success, error } from "../utils/responseHandler.js";
+import myJson from "../../../customers.js";
 
 export const userController = {
   // -------------------- funções de exemplo para popular um controller  -------------------- \\
@@ -7,20 +8,52 @@ export const userController = {
     try {
       const users = await userService.getAll();
 
-      return res.json(success("Usuários encontrados".users));
+      return res.json(success("Usuários encontrados", users));
     } catch (err) {
-      return res.status(500).json(error("Erro ao buscar todos os usuários"));
+      return res.status(500).json(error("Erro ao buscar todos os usuários", err));
+    }
+  },
+
+  verifyUser: async (req, res) => {
+    try {
+      const { usuario, senha } = req.body;
+    
+      const resultado = await myJson.findUser(usuario, senha)
+
+      if (!resultado) {
+        return res.status(401).json(error("Usuário ou senha incorretos"));
+      }
+
+      return res.json(success("Usuário verificado com sucesso!", resultado));
+
+    } catch (err) {
+      return res.status(500).json(error("Erro ao verificar usuário!", err));
     }
   },
 
   createUser: async (req, res) => {
     try {
-      const userData = req.body;
-      const user = await userService.create(userData);
+      const { usuario, email, senha, aceitarTermos } = req.body;
 
-      return res.json(success("Usuário criado com sucesso!", user));
+      const newId = await myJson.readJSON() + 1;
+
+      const userData = {
+        id: newId,
+        usuario,
+        email,
+        senha,
+        aceitarTermos,
+      };
+
+      // const user = await userService.create(userData);
+
+      await myJson.addToJSON(userData);
+
+      // await myJson.readJSON();
+
+      return res.json(success("Usuário criado com sucesso!"));
     } catch (err) {
-      return res.status(500).json(error("Erro ao crirar usuário!", err));
+      return res.status(500).json(error("Erro ao criar usuário!", err));
     }
   },
 
@@ -28,7 +61,10 @@ export const userController = {
     try {
       const user = await userService.getById(req.params.id);
 
-      if (!user) return res.status(404).json(error("Usuário não encontrado"));
+      if (!user) {
+        return res.status(404).json(error("Usuário não encontrado"));
+      }
+
       return res.json(success("Usuário encontrado", user));
     } catch (err) {
       return res

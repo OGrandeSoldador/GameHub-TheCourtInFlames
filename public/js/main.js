@@ -120,21 +120,58 @@ $(function () {
 
     console.log("✅ Login válido! Enviando para API...");
 
+    const userDataLogin = {
+      usuario: inputUsuario.val().trim(),
+      senha: inputSenha.val().trim()
+    };
+
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userDataLogin),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw errorData;
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        alert("Usuario existe no banco de dados");
+
+        console.log(data.status);
+
+        // reseta os campos do form
+        formLogin.reset();
+
+        // remove as classes de validação para resetar o visual
+        $(formLogin).removeClass("was-validated");
+        $("#formLogin .is-valid, #formLogin .is-invalid").removeClass("is-valid is-invalid");
+
+      })
+      .catch((error) => {
+        console.error("Erro no login:", error);
+        alert("Ocorreu um erro ao tentar logar. Verifique o console.");
+      });
     // REQUISIÇÃO
-    /*
+
     instance_api.post("/login", {
       usuario: inputUsuario.val().trim(),
       senha: inputSenha.val().trim(),
       lembrar: $("#lembrar").is(":checked")
     })
-    .then(res => {
-      console.log("LOGIN OK", res.data);
-      window.location.href = "/dashboard";
-    })
-    .catch(err => {
-      console.error("Erro no login", err);
-    });
-    */
+      .then(res => {
+        console.log("LOGIN OK", res.data);
+        window.location.href = "/dashboard";
+      })
+      .catch(err => {
+        console.error("Erro no login", err);
+      });
+
   });
 
   // ============================================
@@ -147,19 +184,6 @@ $(function () {
   const inputRegisterRepeatPassword = $("#registerRepeatPassword");
   const inputAceitarTermos = $("#aceitarTermos");
   const btnRegister = $("#handleRegister");
-
-  const objetos = [
-    {
-      nome: "zezin",
-      temFilho: true,
-      message: "Viado"
-    },
-    {
-      nome: "Will",
-      temFilho: false,
-      message: "Miguel"
-    }
-  ];
 
   const customValidatorsRegister = [
     // Validações do USUÁRIO
@@ -316,20 +340,45 @@ $(function () {
     console.log("✅ Registro válido! Enviando para API...");
 
     // REQUISIÇÃO
-    /*
-    instance_api.post("/register", {
+    const userData = {
       usuario: inputRegisterUsuario.val().trim(),
       email: inputRegisterEmail.val().trim(),
       senha: inputRegisterPassword.val().trim(),
-      aceitouTermos: inputAceitarTermos.is(":checked")
+      aceitarTermos: inputAceitarTermos.is(":checked")
+    };
+
+    // REQUISIÇÃO com Fetch API
+    fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
     })
-    .then(res => {
-      console.log("REGISTRO OK", res.data);
-      $("#login-tab").tab("show");
-    })
-    .catch(err => {
-      console.error("Erro no registro", err);
-    });
-    */
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw errorData;
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        alert("Usuário registrado com sucesso!");
+
+        // reseta os campos do form
+        formRegister.reset();
+
+        // remove as classes de validação para resetar o visual
+        $(formRegister).removeClass("was-validated");
+        $("#formRegister .is-valid, #formRegister .is-invalid").removeClass("is-valid is-invalid");
+
+        // redireciona para a tab de login
+        $("#login-tab").tab("show");
+      })
+      .catch((error) => {
+        console.error("❌ Erro no registro:", error);
+        alert("Ocorreu um erro ao registrar. Verifique o console.");
+      });
   });
 });
