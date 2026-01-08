@@ -1,15 +1,16 @@
-import { db } from "../../config/db.js";
+import { db, getConnection } from "../../config/db.js";
 
+const connection = await getConnection()
 //mudar para prisma ou typeorm
 export const userService = {
   async getAll() {
-    const [rows] = await db.query("SELECT * FROM users");
-    return rows;
+    const data = await connection.query("SELECT * FROM users");
+    return data.recordset;
   },
 
   async getById(id) {
-    const [rows] = await db.query("SELECT * FROM users WHERE id = ?", [id]);
-    return rows[0] || null;
+    const data = await connection.query("SELECT * FROM users WHERE id = ?", [id]);
+    return data.recordset || null;
   },
 
   async create(data) {

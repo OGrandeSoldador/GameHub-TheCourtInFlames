@@ -1,8 +1,6 @@
 import { userService } from "../services/userService.js";
 import { success, error } from "../utils/responseHandler.js";
-import myJson from "../../../customers.js";
 import bcryptData from "../../../hash.js";
-
 
 export const userController = {
   // -------------------- funções de exemplo para popular um controller  -------------------- \\
@@ -17,16 +15,19 @@ export const userController = {
   },
 
   verifyUser: async (req, res) => {
+
+    // lembrar de atualizar as funções para usar o banco de dados
+
     try {
       const { usuario, senha } = req.body;
 
       const userExist = await myJson.findUsername(usuario);
       const resultado = await myJson.findUser(usuario, senha)
-      
+
       if (!userExist) {
         return res.status(401).json(error("Nome de usuário não registrado"));
       }
-      
+
       if (!resultado) {
         return res.status(401).json(error("Usuário ou senha incorretos"));
       }

@@ -6,7 +6,7 @@ dotenv.config();
 export const db = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  server: process.env.DB_HOST || "mssql",
+  server: process.env.DB_HOST,
   database: process.env.DB_NAME,
   options: {
     encrypt: false,
