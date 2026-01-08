@@ -2,15 +2,13 @@ import express from "express";
 import { userController } from "../controllers/userController.js";
 
 const router = express.Router();
-
+// lista todos os usuários
 router.get("/users", userController.getAllUsers);
-
-router.post("/login", userController.verifyUser);
-
-router.post("/register", userController.createUser);
-
+// busca 1 usuário no banco de dados com base no "id"
 router.get("/users/:id", userController.getUserById);
-
-router.post("/createUser", userController.createUser);
+// verifica se o usuário existe no banco de dados
+router.post("/login", userController.verifyUser);
+// cria um usuário no banco de dados
+router.post("/register", userController.createUser);
 
 export default router;

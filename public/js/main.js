@@ -121,7 +121,7 @@ $(function () {
     console.log("✅ Login válido! Enviando para API...");
 
     const userDataLogin = {
-      usuario: inputUsuario.val().trim(),
+      nome: inputUsuario.val().trim(),
       senha: inputSenha.val().trim()
     };
 
@@ -232,6 +232,7 @@ $(function () {
       validate: (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
       message: "Insira um formato de email válido."
     },
+
     // Validações senha
     {
       field: inputRegisterPassword,
@@ -350,7 +351,7 @@ $(function () {
 
     // REQUISIÇÃO
     const userData = {
-      usuario: inputRegisterUsuario.val().trim(),
+      nome: inputRegisterUsuario.val().trim(),
       email: inputRegisterEmail.val().trim(),
       senha: inputRegisterPassword.val().trim(),
       aceitarTermos: inputAceitarTermos.is(":checked")

@@ -1,6 +1,5 @@
 import { userService } from "../services/userService.js";
 import { success, error } from "../utils/responseHandler.js";
-import bcryptData from "../../../hash.js";
 
 export const userController = {
   // -------------------- funções de exemplo para popular um controller  -------------------- \\
@@ -15,23 +14,23 @@ export const userController = {
   },
 
   verifyUser: async (req, res) => {
-
-    // lembrar de atualizar as funções para usar o banco de dados
+    const { nome, senha } = req.body;
+    // // lembrar de atualizar as funções para usar o banco de dados
 
     try {
-      const { usuario, senha } = req.body;
 
-      const userExist = await myJson.findUsername(usuario);
-      const resultado = await myJson.findUser(usuario, senha)
+      const userExist = await userService.verifyUserName(nome);
 
       if (!userExist) {
         return res.status(401).json(error("Nome de usuário não registrado"));
       }
 
+      const resultado = await userService.loginUser(nome, senha);
+
       if (!resultado) {
         return res.status(401).json(error("Usuário ou senha incorretos"));
       }
-
+      return res.status(200).json(success("Usuário logado com sucesso", resultado));
       return res.json(success("Usuário verificado com sucesso!"));
 
     } catch (err) {
@@ -40,38 +39,32 @@ export const userController = {
   },
 
   createUser: async (req, res) => {
-    const { usuario, email, senha, aceitarTermos } = req.body;
+    const { nome, email, senha, aceitarTermos } = req.body;
 
-    const userNameFound = await myJson.findUsername(usuario);
-    const userEmailFound = await myJson.findEmail(email);
+    const userExists = await userService.verifyUserName(nome);
+    const emailExists = await userService.verifyEmail(email);
 
     // verifica se o nome de usuario ja existe
-    if (userNameFound) {
+    if (userExists) {
       return res.status(400).json(error("Nome de usuário já está em uso!"));
     };
     // verifica se o email ja existe
-    if (userEmailFound) {
-      return res.status(400).json(error("Email já está em uso!"));
+    if (emailExists) {
+      return res.status(400).json(error("Este email já está cadastrado!"));
     };
-
     // as duas condições acima passarem, eu tento:
     try {
 
-      const hashedPassword = await bcryptData.bcryptPassword(senha);
-
-      const newId = await myJson.readJSON() + 1;
+      
 
       const userData = {
-        id: newId,
-        usuario,
+        nome,
         email,
-        senha: hashedPassword,
+        senha,
         aceitarTermos,
       };
 
-      // const user = await userService.create(userData);
-
-      await myJson.addToJSON(userData);
+      await userService.create(userData);
 
       return res.json(success("Usuário criado com sucesso!"));
     } catch (err) {

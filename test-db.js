@@ -1,4 +1,4 @@
-import { getConnection, db } from "./src/config/db.js"
+import { getConnection } from "./src/config/db.js"
 
 const pool = await getConnection();
 async function main() {
@@ -7,4 +7,3 @@ async function main() {
 }
 
 main();
-
