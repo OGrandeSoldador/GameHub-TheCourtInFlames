@@ -7,7 +7,7 @@ export const userController = {
     try {
       const users = await userService.getAll();
 
-      return res.json(success("Usuários encontrados", users));
+      return res.status(200).json(success("Usuários encontrados", users));
     } catch (err) {
       return res.status(500).json(error("Erro ao buscar todos os usuários", err));
     }
@@ -31,7 +31,6 @@ export const userController = {
         return res.status(401).json(error("Usuário ou senha incorretos"));
       }
       return res.status(200).json(success("Usuário logado com sucesso", resultado));
-      return res.json(success("Usuário verificado com sucesso!"));
 
     } catch (err) {
       return res.status(500).json(error("Erro ao verificar usuário!", err));
@@ -54,9 +53,6 @@ export const userController = {
     };
     // as duas condições acima passarem, eu tento:
     try {
-
-      
-
       const userData = {
         nome,
         email,
@@ -66,7 +62,7 @@ export const userController = {
 
       await userService.create(userData);
 
-      return res.json(success("Usuário criado com sucesso!"));
+      return res.status(201).json(success("Usuário criado com sucesso!"));
     } catch (err) {
       return res.status(500).json(error("Erro ao criar usuário!", err));
     }
