@@ -10,22 +10,23 @@ export const userController = {
 
       return res.json(success("Usuários encontrados", users));
     } catch (err) {
-      return res.status(500).json(error("Erro ao buscar todos os usuários", err));
+      return res
+        .status(500)
+        .json(error("Erro ao buscar todos os usuários", err));
     }
   },
 
   verifyUser: async (req, res) => {
     try {
       const { usuario, senha } = req.body;
-    
-      const resultado = await myJson.findUser(usuario, senha)
+
+      const resultado = await userService.getUser(usuario, senha);
 
       if (!resultado) {
-        return res.status(401).json(error("Usuário ou senha incorretos"));
+        return res.status(200).json(success("Usuário ou senha incorretos"));
       }
 
       return res.json(success("Usuário verificado com sucesso!", resultado));
-
     } catch (err) {
       return res.status(500).json(error("Erro ao verificar usuário!", err));
     }
@@ -35,7 +36,7 @@ export const userController = {
     try {
       const { usuario, email, senha, aceitarTermos } = req.body;
 
-      const newId = await myJson.readJSON() + 1;
+      const newId = (await myJson.readJSON()) + 1;
 
       const userData = {
         id: newId,

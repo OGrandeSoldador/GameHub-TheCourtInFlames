@@ -79,7 +79,7 @@ $(function () {
       }
 
       const validacoesDoCampo = customValidatorsLogin.filter(
-        (v) => v.field.attr("id") === fieldId
+        (v) => v.field.attr("id") === fieldId,
       );
 
       let primeiroErro = null;
@@ -109,7 +109,7 @@ $(function () {
     return todosValidos;
   }
 
-  btnLogin.on("click", function () {
+  btnLogin.on("click", async function () {
     $(formLogin).addClass("was-validated");
     const valido = validarCamposCustomizadosLogin();
 
@@ -122,56 +122,31 @@ $(function () {
 
     const userDataLogin = {
       usuario: inputUsuario.val().trim(),
-      senha: inputSenha.val().trim()
+      senha: inputSenha.val().trim(),
     };
 
-    fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userDataLogin),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw errorData;
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        alert("Usuario existe no banco de dados");
-
-        console.log(data.status);
-
-        // reseta os campos do form
-        formLogin.reset();
-
-        // remove as classes de validação para resetar o visual
-        $(formLogin).removeClass("was-validated");
-        $("#formLogin .is-valid, #formLogin .is-invalid").removeClass("is-valid is-invalid");
-
-      })
-      .catch((error) => {
-        console.error("Erro no login:", error);
-        alert("Ocorreu um erro ao tentar logar. Verifique o console.");
-      });
-    // REQUISIÇÃO
-
-    instance_api.post("/login", {
-      usuario: inputUsuario.val().trim(),
-      senha: inputSenha.val().trim(),
-      lembrar: $("#lembrar").is(":checked")
-    })
-      .then(res => {
-        console.log("LOGIN OK", res.data);
-        window.location.href = "/dashboard";
-      })
-      .catch(err => {
-        console.error("Erro no login", err);
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userDataLogin),
       });
 
+      const data = await response.json();
+
+      if (!response.ok || !data.status) {
+        throw new Error(data.message || `HTTP ${response.status}`);
+      }
+
+      formLogin.reset();
+      $(formLogin).removeClass("was-validated");
+      $("#formLogin .is-valid, #formLogin .is-invalid").removeClass(
+        "is-valid is-invalid",
+      );
+    } catch (err) {
+      console.error("Erro no login:", err.message);
+      alert(err.message || "Falha ao conectar na API");
+    }
   });
 
   // ============================================
@@ -216,51 +191,52 @@ $(function () {
     {
       field: inputRegisterEmail,
       validate: (value) => value.length > 0,
-      message: "O email é obrigatório."
+      message: "O email é obrigatório.",
     },
     {
       field: inputRegisterEmail,
-      validate: (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
-      message: "Insira um formato de email válido."
+      validate: (value) =>
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
+      message: "Insira um formato de email válido.",
     },
     // Validações senha
     {
       field: inputRegisterPassword,
       validate: (value) => value.length > 0,
-      message: "A senha é obrigatória."
+      message: "A senha é obrigatória.",
     },
     {
       field: inputRegisterPassword,
       validate: (value) => value.length >= 8,
-      message: "A senha deve ter no mínimo 8 caracteres."
+      message: "A senha deve ter no mínimo 8 caracteres.",
     },
     {
       field: inputRegisterPassword,
       validate: (value) => /[A-Z]/.test(value),
-      message: "A senha deve conter ao menos 1 letra maiúscula."
+      message: "A senha deve conter ao menos 1 letra maiúscula.",
     },
     {
       field: inputRegisterPassword,
       validate: (value) => /\d/.test(value),
-      message: "A senha deve conter ao menos 1 número."
+      message: "A senha deve conter ao menos 1 número.",
     },
     // Validação confirmar senha
     {
       field: inputRegisterRepeatPassword,
       validate: (value) => value.length > 0,
-      message: "Confirme a senha."
+      message: "Confirme a senha.",
     },
     {
       field: inputRegisterRepeatPassword,
       validate: (value) => inputRegisterPassword.val() === value,
-      message: "As senhas não coincidem."
+      message: "As senhas não coincidem.",
     },
     // Aceitar termos
     {
       field: inputAceitarTermos,
       validate: (value) => value,
-      message: "Você precisa aceitar os termos."
-    }
+      message: "Você precisa aceitar os termos.",
+    },
   ];
 
   customValidatorsRegister.forEach(({ field }) => {
@@ -285,7 +261,7 @@ $(function () {
     const camposProcessados = new Set();
 
     customValidatorsRegister.forEach(({ field, validate, message }) => {
-      const valor = field.is(':checkbox') ? field.is(':checked') : field.val();
+      const valor = field.is(":checkbox") ? field.is(":checked") : field.val();
       const fieldId = field.attr("id");
 
       if (camposProcessados.has(fieldId)) {
@@ -293,7 +269,7 @@ $(function () {
       }
 
       const validacoesDoCampo = customValidatorsRegister.filter(
-        (v) => v.field.attr("id") === fieldId
+        (v) => v.field.attr("id") === fieldId,
       );
 
       let primeiroErro = null;
@@ -322,7 +298,6 @@ $(function () {
       }
 
       camposProcessados.add(fieldId);
-
     });
 
     return todosValidos;
@@ -344,7 +319,7 @@ $(function () {
       usuario: inputRegisterUsuario.val().trim(),
       email: inputRegisterEmail.val().trim(),
       senha: inputRegisterPassword.val().trim(),
-      aceitarTermos: inputAceitarTermos.is(":checked")
+      aceitarTermos: inputAceitarTermos.is(":checked"),
     };
 
     // REQUISIÇÃO com Fetch API
@@ -371,7 +346,9 @@ $(function () {
 
         // remove as classes de validação para resetar o visual
         $(formRegister).removeClass("was-validated");
-        $("#formRegister .is-valid, #formRegister .is-invalid").removeClass("is-valid is-invalid");
+        $("#formRegister .is-valid, #formRegister .is-invalid").removeClass(
+          "is-valid is-invalid",
+        );
 
         // redireciona para a tab de login
         $("#login-tab").tab("show");

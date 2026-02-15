@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === "dev") {
   // Deve vir ANTES de servir os arquivos estáticos para desabilitar o cache.
   app.use(connectLivereload());
   console.log(
-    `🔄 Livereload rodando na porta ${process.env.LIVERELOAD_PORT || 35729}`
+    `🔄 Livereload rodando na porta ${process.env.LIVERELOAD_PORT || 35729}`,
   );
 }
 
@@ -46,19 +46,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   "/bootstrap",
-  express.static(path.join(__dirname, "node_modules/bootstrap/dist"))
+  express.static(path.join(__dirname, "node_modules/bootstrap/dist")),
 );
 app.use(
   "/bootstrap-icons",
-  express.static(path.join(__dirname, "node_modules/bootstrap-icons/font"))
+  express.static(path.join(__dirname, "node_modules/bootstrap-icons/font")),
 );
 app.use(
   "/axios",
-  express.static(path.join(__dirname, "node_modules/axios/dist"))
+  express.static(path.join(__dirname, "node_modules/axios/dist")),
 );
 app.use(
   "/js",
-  express.static(path.join(__dirname, "node_modules/jquery/dist"))
+  express.static(path.join(__dirname, "node_modules/jquery/dist")),
 );
 
 app.use((req, res, next) => {
@@ -117,7 +117,7 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server rodando em http://localhost:${PORT}`);
   if (process.env.NODE_ENV === "dev") {
     console.log(
-      "🔥 Hot reload ativo — edite arquivos em ./public e veja as mudanças em tempo real."
+      "🔥 Hot reload ativo — edite arquivos em ./public e veja as mudanças em tempo real.",
     );
   }
 });

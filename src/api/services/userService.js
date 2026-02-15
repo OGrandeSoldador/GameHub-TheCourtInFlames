@@ -1,4 +1,5 @@
-import { db } from "../../config/db.js";
+import { db, getConnection } from "../../config/db.js";
+import sql from "mssql";
 
 //mudar para prisma ou typeorm
 export const userService = {
@@ -16,8 +17,31 @@ export const userService = {
     const { name, email } = data;
     const [result] = await db.query(
       "INSERT INTO users (name, email) VALUES (?, ?)",
-      [name, email] 
+      [name, email],
     );
     return { id: result.insertId, name: usuario, email };
+  },
+
+  async getUser(name, password) {
+    const pool = await getConnection();
+    const request = pool.request();
+
+    request.input("username", sql.NVarChar(50), name);
+    request.input("passwordHash", sql.NVarChar(255), password);
+
+    const result = await request.query(`SELECT id, username, email
+      FROM 
+        Users
+      WHERE 
+        username = @username
+      AND 
+        password_hash = @passwordHash
+`);
+    if (result.rowsAffected[0] == 1){
+      return true;
+    }
+    else {
+      return false;
+    }
   },
 };

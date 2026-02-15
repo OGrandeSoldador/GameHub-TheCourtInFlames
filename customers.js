@@ -15,7 +15,7 @@ export const myJson = {
     },
     async findUser(nome, senha) {
         const json = JSON.parse(await fs.readFile(path, "utf8"));
-        console.log(json);
+        //console.log(json);
 
         const userExist = json.find(user => user.usuario === nome && user.senha === senha);
         if (userExist) {
