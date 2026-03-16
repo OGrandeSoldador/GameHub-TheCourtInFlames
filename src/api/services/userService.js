@@ -22,12 +22,37 @@ export const userService = {
     return { id: result.insertId, name: usuario, email };
   },
 
+  async checkUserAvailability(name, email) {
+    const pool = await getConnection();
+    const request = pool.request();
+
+    request.input("username", sql.NVarChar(100), name);
+    request.input("email", sql.NVarChar(200), email);
+
+    const result = await request.query(
+      `SELECT 
+        username, email 
+      FROM 
+        Users 
+      WHERE 
+        username = @username 
+      OR 
+        email = @email;`,
+    );
+
+    if (result.rowsAffected[0] === 0){
+      return true;
+    }
+     
+    return false
+  },
+
   async getUser(name, password) {
     const pool = await getConnection();
     const request = pool.request();
 
-    request.input("username", sql.NVarChar(50), name);
-    request.input("passwordHash", sql.NVarChar(255), password);
+    request.input("username", sql.NVarChar(100), name);
+    request.input("passwordHash", sql.NVarChar(510), password);
 
     const result = await request.query(`SELECT id, username, email
       FROM 
@@ -35,12 +60,11 @@ export const userService = {
       WHERE 
         username = @username
       AND 
-        password_hash = @passwordHash
+        password_hash = @passwordHash;
 `);
-    if (result.rowsAffected[0] == 1){
+    if (result.rowsAffected[0] == 1) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   },

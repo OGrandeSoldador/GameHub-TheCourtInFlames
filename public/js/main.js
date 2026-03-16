@@ -114,7 +114,7 @@ $(function () {
     const valido = validarCamposCustomizadosLogin();
 
     if (!valido) {
-      console.warn("⚠️ Validação de login falhou");
+      console.log("⚠️ Validação de login falhou");
       return;
     }
 
@@ -136,6 +136,12 @@ $(function () {
 
       if (!response.ok || !data.status) {
         throw new Error(data.message || `HTTP ${response.status}`);
+      }
+
+      if (data.data != null) {
+        console.log("✅ Login bem sucedido!");
+      } else {
+        console.log("⚠️ Login incorreto!");
       }
 
       formLogin.reset();
@@ -322,12 +328,12 @@ $(function () {
       aceitarTermos: inputAceitarTermos.is(":checked"),
     };
 
+    console.log(userData);
+
     // REQUISIÇÃO com Fetch API
     fetch("/api/register", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
     })
       .then((response) => {
@@ -351,7 +357,7 @@ $(function () {
         );
 
         // redireciona para a tab de login
-        $("#login-tab").tab("show");
+        //$("#login-tab").tab("show");
       })
       .catch((error) => {
         console.error("❌ Erro no registro:", error);

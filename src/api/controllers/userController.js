@@ -46,9 +46,9 @@ export const userController = {
         aceitarTermos,
       };
 
-      // const user = await userService.create(userData);
+      const user = await userService.checkUserAvailability(usuario, email);
 
-      await myJson.addToJSON(userData);
+      //await myJson.addToJSON(user);
 
       // await myJson.readJSON();
 
