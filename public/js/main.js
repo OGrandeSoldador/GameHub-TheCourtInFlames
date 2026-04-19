@@ -1,0 +1,367 @@
+$(function () {
+  // ============================================
+  // LOGIN
+  // ============================================
+  const formLogin = $("#formLogin")[0];
+  const inputUsuario = $("#usuario");
+  const inputSenha = $("#senha");
+  const btnLogin = $("#handleLogin");
+
+  const customValidatorsLogin = [
+    // Validações do USUÁRIO
+    {
+      field: inputUsuario,
+      validate: (value) => value.trim().length > 0,
+      message: "O usuário é obrigatório.",
+    },
+    {
+      field: inputUsuario,
+      validate: (value) => value.length > 3,
+      message: "O usuário deve ter no mínimo 4 caracteres.",
+    },
+    {
+      field: inputUsuario,
+      validate: (value) => /^[a-zA-Z].*$/.test(value),
+      message: "O usuário deve começar com uma letra.",
+    },
+    {
+      field: inputUsuario,
+      validate: (value) => !/\s/.test(value),
+      message: "O usuário não pode conter espaços.",
+    },
+    {
+      field: inputUsuario,
+      validate: (value) => value.length < 16,
+      message: "O usuário deve ter no máximo 15 caracteres.",
+    },
+    // Validações da SENHA
+    {
+      field: inputSenha,
+      validate: (value) => value.length > 0,
+      message: "A senha é obrigatória.",
+    },
+    {
+      field: inputSenha,
+      validate: (value) => value.length >= 8,
+      message: "A senha deve ter no mínimo 8 caracteres.",
+    },
+    {
+      field: inputSenha,
+      validate: (value) => /[A-Z]/.test(value),
+      message: "A senha deve conter ao menos 1 letra maiúscula.",
+    },
+    {
+      field: inputSenha,
+      validate: (value) => /\d/.test(value),
+      message: "A senha deve conter ao menos 1 número.",
+    },
+  ];
+
+  // Listeners para validação em tempo real
+  customValidatorsLogin.forEach(({ field }) => {
+    field.on("input", function () {
+      if ($(formLogin).hasClass("was-validated")) {
+        validarCamposCustomizadosLogin();
+      }
+    });
+  });
+
+  function validarCamposCustomizadosLogin() {
+    let todosValidos = true;
+    const camposProcessados = new Set();
+
+    customValidatorsLogin.forEach(({ field, validate, message }) => {
+      const valor = field.val();
+      const fieldId = field.attr("id");
+
+      if (camposProcessados.has(fieldId)) {
+        return;
+      }
+
+      const validacoesDoCampo = customValidatorsLogin.filter(
+        (v) => v.field.attr("id") === fieldId,
+      );
+
+      let primeiroErro = null;
+      let todasPassaram = true;
+
+      for (const validacao of validacoesDoCampo) {
+        if (!validacao.validate(valor)) {
+          if (!primeiroErro) {
+            primeiroErro = validacao.message;
+          }
+          todasPassaram = false;
+        }
+      }
+
+      if (!todasPassaram) {
+        field.addClass("is-invalid").removeClass("is-valid");
+        field.siblings(".invalid-feedback").text(primeiroErro);
+        todosValidos = false;
+      } else {
+        field.addClass("is-valid").removeClass("is-invalid");
+        field.siblings(".invalid-feedback").text("");
+      }
+
+      camposProcessados.add(fieldId);
+    });
+
+    return todosValidos;
+  }
+
+  btnLogin.on("click", async function () {
+    $(formLogin).addClass("was-validated");
+    const valido = validarCamposCustomizadosLogin();
+
+    if (!valido) {
+      console.log("⚠️ Validação de login falhou");
+      return;
+    }
+
+    console.log("✅ Login válido! Enviando para API...");
+
+    const userDataLogin = {
+      usuario: inputUsuario.val().trim(),
+      senha: inputSenha.val().trim(),
+    };
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userDataLogin),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.status) {
+        throw new Error(data.message || `HTTP ${response.status}`);
+      }
+
+      if (data.data != null) {
+        console.log("✅ Login bem sucedido!");
+      } else {
+        console.log("⚠️ Login incorreto!");
+      }
+
+      formLogin.reset();
+      $(formLogin).removeClass("was-validated");
+      $("#formLogin .is-valid, #formLogin .is-invalid").removeClass(
+        "is-valid is-invalid",
+      );
+    } catch (err) {
+      console.error("Erro no login:", err.message);
+      alert(err.message || "Falha ao conectar na API");
+    }
+  });
+
+  // ============================================
+  // REGISTRO
+  // ============================================
+  const formRegister = $("#formRegister")[0];
+  const inputRegisterUsuario = $("#registerUsuario");
+  const inputRegisterEmail = $("#registerEmail");
+  const inputRegisterPassword = $("#registerPassword");
+  const inputRegisterRepeatPassword = $("#registerRepeatPassword");
+  const inputAceitarTermos = $("#aceitarTermos");
+  const btnRegister = $("#handleRegister");
+
+  const customValidatorsRegister = [
+    // Validações do USUÁRIO
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => value.trim().length > 0,
+      message: "O usuário é obrigatório.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => value.trim().length > 3,
+      message: "O usuário deve ter no mínimo 4 caracteres.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => /^[a-zA-Z].*$/.test(value),
+      message: "O usuário deve começar com uma letra.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => !/\s/.test(value),
+      message: "O usuário não pode conter espaços.",
+    },
+    {
+      field: inputRegisterUsuario,
+      validate: (value) => value.length < 16,
+      message: "O usuário deve ter no máximo 15 caracteres.",
+    },
+    // Validação email
+    {
+      field: inputRegisterEmail,
+      validate: (value) => value.length > 0,
+      message: "O email é obrigatório.",
+    },
+    {
+      field: inputRegisterEmail,
+      validate: (value) =>
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
+      message: "Insira um formato de email válido.",
+    },
+    // Validações senha
+    {
+      field: inputRegisterPassword,
+      validate: (value) => value.length > 0,
+      message: "A senha é obrigatória.",
+    },
+    {
+      field: inputRegisterPassword,
+      validate: (value) => value.length >= 8,
+      message: "A senha deve ter no mínimo 8 caracteres.",
+    },
+    {
+      field: inputRegisterPassword,
+      validate: (value) => /[A-Z]/.test(value),
+      message: "A senha deve conter ao menos 1 letra maiúscula.",
+    },
+    {
+      field: inputRegisterPassword,
+      validate: (value) => /\d/.test(value),
+      message: "A senha deve conter ao menos 1 número.",
+    },
+    // Validação confirmar senha
+    {
+      field: inputRegisterRepeatPassword,
+      validate: (value) => value.length > 0,
+      message: "Confirme a senha.",
+    },
+    {
+      field: inputRegisterRepeatPassword,
+      validate: (value) => inputRegisterPassword.val() === value,
+      message: "As senhas não coincidem.",
+    },
+    // Aceitar termos
+    {
+      field: inputAceitarTermos,
+      validate: (value) => value,
+      message: "Você precisa aceitar os termos.",
+    },
+  ];
+
+  customValidatorsRegister.forEach(({ field }) => {
+    field.on("input change", function () {
+      if ($(formRegister).hasClass("was-validated")) {
+        validarCamposCustomizadosRegister();
+      }
+    });
+  });
+
+  inputRegisterPassword.on("input", function () {
+    if (
+      $(formRegister).hasClass("was-validated") &&
+      inputRegisterRepeatPassword.val().length > 0
+    ) {
+      validarCamposCustomizadosRegister();
+    }
+  });
+
+  function validarCamposCustomizadosRegister() {
+    let todosValidos = true;
+    const camposProcessados = new Set();
+
+    customValidatorsRegister.forEach(({ field, validate, message }) => {
+      const valor = field.is(":checkbox") ? field.is(":checked") : field.val();
+      const fieldId = field.attr("id");
+
+      if (camposProcessados.has(fieldId)) {
+        return;
+      }
+
+      const validacoesDoCampo = customValidatorsRegister.filter(
+        (v) => v.field.attr("id") === fieldId,
+      );
+
+      let primeiroErro = null;
+      let todasPassaram = true;
+
+      for (const validacao of validacoesDoCampo) {
+        if (!validacao.validate(valor)) {
+          if (!primeiroErro) {
+            primeiroErro = validacao.message;
+          }
+          todasPassaram = false;
+        }
+      }
+
+      if (!todasPassaram) {
+        field.addClass("is-invalid").removeClass("is-valid");
+        field.siblings(".invalid-feedback").text(primeiroErro);
+
+        if (field.is(":checkbox")) {
+          field.siblings(".invalid-feedback").show();
+        }
+        todosValidos = false;
+      } else {
+        field.addClass("is-valid").removeClass("is-invalid");
+        field.siblings(".invalid-feedback").text("");
+      }
+
+      camposProcessados.add(fieldId);
+    });
+
+    return todosValidos;
+  }
+
+  btnRegister.on("click", function () {
+    $(formRegister).addClass("was-validated");
+    const valido = validarCamposCustomizadosRegister();
+
+    if (!valido) {
+      console.warn("⚠️ Validação de registro falhou");
+      return;
+    }
+
+    console.log("✅ Registro válido! Enviando para API...");
+
+    // REQUISIÇÃO
+    const userData = {
+      usuario: inputRegisterUsuario.val().trim(),
+      email: inputRegisterEmail.val().trim(),
+      senha: inputRegisterPassword.val().trim(),
+      aceitarTermos: inputAceitarTermos.is(":checked"),
+    };
+
+    console.log(userData);
+
+    // REQUISIÇÃO com Fetch API
+    fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw errorData;
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        alert("Usuário registrado com sucesso!");
+
+        // reseta os campos do form
+        formRegister.reset();
+
+        // remove as classes de validação para resetar o visual
+        $(formRegister).removeClass("was-validated");
+        $("#formRegister .is-valid, #formRegister .is-invalid").removeClass(
+          "is-valid is-invalid",
+        );
+
+        // redireciona para a tab de login
+        //$("#login-tab").tab("show");
+      })
+      .catch((error) => {
+        console.error("❌ Erro no registro:", error);
+        alert("Ocorreu um erro ao registrar. Verifique o console.");
+      });
+  });
+});
