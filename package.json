@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=dev nodemon --legacy-watch server.js",
+    "dev": "cross-env NODE_ENV=dev nodemon --legacy-watch server.js",
     "start": "node server.js"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "mssql": "^10.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "connect-livereload": "^0.6.1",
     "livereload": "^0.10.3",
     "nodemon": "^3.1.10"
